@@ -44,7 +44,7 @@ export const checkAuth = createAsyncThunk("auth/check", async () => {
 
   if (token && user) {
     // We could verify the token with the server here if needed
-    const validUser = await mockApiClient.getCurrentUser(token)
+    //const validUser = await mockApiClient.getCurrentUser(token)
     return { user, token }
   }
 

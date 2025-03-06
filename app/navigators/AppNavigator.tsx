@@ -10,9 +10,10 @@ import * as Screens from "@/screens"
 import Config from "../config"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 import { useAppTheme, useThemeProvider } from "@/utils/useAppTheme"
-import { ComponentProps } from "react"
-import { RootState, useAppSelector } from "@/store/store"
+import { ComponentProps, useEffect } from "react"
+import { RootState, useAppDispatch, useAppSelector } from "@/store/store"
 import { MainNavigator } from "./MainNavigator"
+import { checkAuth } from "@/store/auth/authSlice"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -54,6 +55,12 @@ const AppStack = () => {
   } = useAppTheme()
 
   const { isAuthenticated } = useAppSelector((state: RootState) => state.auth)
+  const dispatch = useAppDispatch()
+
+  // Check for existing authentication on app load
+  useEffect(() => {
+    dispatch(checkAuth())
+  }, [dispatch])
 
   return (
     <Stack.Navigator
