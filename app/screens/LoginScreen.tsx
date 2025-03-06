@@ -166,6 +166,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
             textStyle={themed($loginButtonText)}
             disabled={isSubmitting}
             onPress={handleLogin}
+            preset="filled"
             LeftAccessory={isSubmitting ? LoadingIndicator : undefined}
           />
         </View>
