@@ -1,19 +1,24 @@
 import React, { FC, useCallback, useState } from "react"
 import { View, ViewStyle, TextStyle, Platform } from "react-native"
-import { Screen, Text } from "@/components"
+import { Screen, Text, Button, Icon } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { useSafeAreaInsetsStyle } from "../utils/useSafeAreaInsetsStyle"
-import { $styles, type ThemedStyle } from "@/theme"
+import { $styles, colors, type ThemedStyle } from "@/theme"
 import { MainTabScreenProps } from "@/navigators/MainNavigator"
 import { Drawer } from "react-native-drawer-layout"
 import { DrawerIconButton } from "./DrawerIconButton"
 import { isRTL } from "@/i18n"
+import { useAppDispatch, useAppSelector } from "@/store/store"
+import { logout } from "@/store/auth/authSlice"
+import { DrawerMenuItem } from "./DrawerMenuItem"
 
 const isAndroid = Platform.OS === "android"
 
 export const DashboardScreen: FC<MainTabScreenProps<"Dashboard">> = () => {
   const { themed } = useAppTheme()
   const $topInset = useSafeAreaInsetsStyle(["top"])
+  const dispatch = useAppDispatch()
+  const user = useAppSelector((state) => state.auth.user)
 
   const [open, setOpen] = useState(false)
 
@@ -25,14 +30,64 @@ export const DashboardScreen: FC<MainTabScreenProps<"Dashboard">> = () => {
     }
   }, [open])
 
+  const handleLogout = () => {
+    dispatch(logout())
+  }
+
+  // Drawer content component
+  const renderDrawerContent = () => (
+    <View style={themed([$drawer, $drawerInsets])}>
+      {/* User Profile Section */}
+      <View style={themed($profileSection)}>
+        <View style={themed($avatarContainer)}>
+          <Icon icon="ladybug" size={60} color={colors.tint} />
+        </View>
+        <Text preset="bold" text={user?.name || "User"} style={themed($userName)} />
+        <Text text={user?.email || ""} style={themed($userEmail)} />
+      </View>
+
+      {/* Drawer Menu Items */}
+      <View style={themed($menuContainer)}>
+        <DrawerMenuItem
+          icon="settings"
+          label="Settings"
+          onPress={() => console.log("Settings pressed")}
+        />
+        <DrawerMenuItem
+          icon="bell"
+          label="Notifications"
+          onPress={() => console.log("Notifications pressed")}
+        />
+        <DrawerMenuItem
+          icon="lock"
+          label="Privacy"
+          onPress={() => console.log("Privacy pressed")}
+        />
+      </View>
+
+      {/* Logout Button */}
+      <View style={themed($logoutContainer)}>
+        <Button
+          preset="reversed"
+          text="Logout"
+          style={themed($logoutButton)}
+          textStyle={themed($logoutButtonText)}
+          LeftAccessory={({ style }) => (
+            <Icon icon="back" color="white" size={20} containerStyle={style} />
+          )}
+          onPress={handleLogout}
+        />
+      </View>
+    </View>
+  )
+  const $drawerInsets = useSafeAreaInsetsStyle(["top"])
   return (
     <Drawer
       open={open}
       onOpen={() => setOpen(true)}
       onClose={() => setOpen(false)}
-      drawerType="back"
       drawerPosition={isRTL ? "right" : "left"}
-      renderDrawerContent={() => <View style={themed([$drawer, $topInset])}></View>}
+      renderDrawerContent={renderDrawerContent}
     >
       <Screen
         preset="fixed"
@@ -40,19 +95,16 @@ export const DashboardScreen: FC<MainTabScreenProps<"Dashboard">> = () => {
         contentContainerStyle={$styles.flex1}
         {...(isAndroid ? { KeyboardAvoidingViewProps: { behavior: undefined } } : {})}
       >
-        <DrawerIconButton onPress={toggleDrawer} />
-        <View style={[themed($headerContainer), $topInset]}>
-          <Text preset="heading" text="Dashboard" style={themed($headerText)} />
+        <View style={$styles.flex1}>
+          <DrawerIconButton onPress={toggleDrawer} />
+          <View style={[themed($headerContainer), $topInset]}>
+            <Text preset="heading" text="Dashboard" style={themed($headerText)} />
+          </View>
         </View>
       </Screen>
     </Drawer>
   )
 }
-
-// Styles
-const $screenContentContainer: ThemedStyle<ViewStyle> = () => ({
-  flex: 1,
-})
 
 const $headerContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   paddingHorizontal: spacing.md,
@@ -66,4 +118,51 @@ const $headerText: ThemedStyle<TextStyle> = () => ({
 const $drawer: ThemedStyle<ViewStyle> = ({ colors }) => ({
   backgroundColor: colors.background,
   flex: 1,
+  paddingHorizontal: 16,
+})
+
+const $profileSection: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  alignItems: "center",
+  paddingVertical: spacing.xl,
+  borderBottomWidth: 1,
+  borderBottomColor: "#e0e0e0",
+})
+
+const $avatarContainer: ThemedStyle<ViewStyle> = ({ colors }) => ({
+  width: 80,
+  height: 80,
+  borderRadius: 40,
+  backgroundColor: colors.palette.neutral300,
+  justifyContent: "center",
+  alignItems: "center",
+  marginBottom: 12,
+})
+
+const $userName: ThemedStyle<TextStyle> = ({ colors, spacing }) => ({
+  color: colors.text,
+  fontSize: 18,
+  marginBottom: spacing.xs,
+})
+
+const $userEmail: ThemedStyle<TextStyle> = ({ colors }) => ({
+  color: colors.textDim,
+  fontSize: 14,
+})
+
+const $menuContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  marginTop: spacing.lg,
+  flex: 1,
+})
+
+const $logoutContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  paddingVertical: spacing.lg,
+  marginBottom: spacing.lg,
+})
+
+const $logoutButton: ThemedStyle<ViewStyle> = ({ colors }) => ({
+  backgroundColor: colors.tint,
+})
+
+const $logoutButtonText: ThemedStyle<TextStyle> = () => ({
+  fontSize: 16,
 })
