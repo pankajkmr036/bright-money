@@ -1,38 +1,41 @@
 const palette = {
-  neutral100: "#FFFFFF",
-  neutral200: "#F4F2F1",
-  neutral300: "#D7CEC9",
-  neutral400: "#B6ACA6",
-  neutral500: "#978F8A",
-  neutral600: "#564E4A",
-  neutral700: "#3C3836",
-  neutral800: "#191015",
-  neutral900: "#000000",
+  neutral100: "#FFFFFF", // White (background of card)
+  neutral200: "#F4F5F4", // Very light green-gray (background)
+  neutral300: "#E6EBE6", // Light green-gray (progress bar background)
+  neutral400: "#B6C5B6", // Medium light green-gray
+  neutral500: "#7A8A7A", // Medium green-gray
+  neutral600: "#5A6A5A", // Medium dark green-gray
+  neutral700: "#3C463C", // Dark green-gray
+  neutral800: "#252825", // Very dark green-gray
+  neutral900: "#0F120F", // Almost black
 
-  primary100: "#F4E0D9",
-  primary200: "#E8C1B4",
-  primary300: "#DDA28E",
-  primary400: "#D28468",
-  primary500: "#C76542",
-  primary600: "#A54F31",
+  // Primary green colors
+  primary100: "#E3F9E7", // Very light green
+  primary200: "#C7F3D0", // Light green
+  primary300: "#86E698", // Medium light green
+  primary400: "#4AD864", // Medium green
+  primary500: "#00C928", // Main green (buttons, progress)
+  primary600: "#00A021", // Dark green
 
-  secondary100: "#DCDDE9",
-  secondary200: "#BCC0D6",
-  secondary300: "#9196B9",
-  secondary400: "#626894",
-  secondary500: "#41476E",
+  // Secondary colors
+  secondary100: "#E0F5E9", // Very light teal
+  secondary200: "#C1EBDA", // Light teal
+  secondary300: "#93D7BC", // Medium light teal
+  secondary400: "#65C39E", // Medium teal
+  secondary500: "#37AF80", // Teal
 
-  accent100: "#FFEED4",
-  accent200: "#FFE1B2",
-  accent300: "#FDD495",
-  accent400: "#FBC878",
-  accent500: "#FFBB50",
+  // Accent colors (optional)
+  accent100: "#FFF9E6", // Very light yellow
+  accent200: "#FFEFC3", // Light yellow
+  accent300: "#FFE59F", // Medium light yellow
+  accent400: "#FFDB7B", // Medium yellow
+  accent500: "#FFCA43", // Yellow
 
   angry100: "#F2D6CD",
   angry500: "#C03403",
 
-  overlay20: "rgba(25, 16, 21, 0.2)",
-  overlay50: "rgba(25, 16, 21, 0.5)",
+  overlay20: "rgba(15, 18, 15, 0.2)",
+  overlay50: "rgba(15, 18, 15, 0.5)",
 } as const
 
 export const colors = {
@@ -61,7 +64,7 @@ export const colors = {
   /**
    * The default border color.
    */
-  border: palette.neutral400,
+  border: palette.neutral300,
   /**
    * The main tinting color.
    */
