@@ -20,7 +20,7 @@ import type { LoginCredentials } from "@/services/api/mockApi/authTypes"
 
 export interface LoginScreenProps extends AppStackScreenProps<"Login"> {}
 
-export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
+export const LoginScreen: React.FC<LoginScreenProps> = () => {
   const { theme, themed } = useAppTheme()
   const dispatch = useDispatch<AppDispatch>()
 
@@ -87,12 +87,6 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
 
       // Dispatch login action to Redux
       await dispatch(login(credentials)).unwrap()
-
-      // If login is successful, navigate to Dashboard
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "Dashboard" }],
-      })
     } catch (error) {
       Alert.alert("Login Failed", "Invalid username or password. Please try again.", [
         { text: "OK" },
