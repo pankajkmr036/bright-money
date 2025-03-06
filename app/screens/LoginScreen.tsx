@@ -1,15 +1,28 @@
-import { FC, useState } from "react"
-import { ActivityIndicator, ImageStyle, TextStyle, View, ViewStyle } from "react-native"
+import React, { useState, useEffect } from "react"
+import {
+  View,
+  ViewStyle,
+  TextStyle,
+  ActivityIndicator,
+  Keyboard,
+  Alert,
+  Image,
+  ImageStyle,
+} from "react-native"
+import { useDispatch } from "react-redux"
+import { Screen, Text, TextField, Button, Icon } from "@/components"
 import { AppStackScreenProps } from "@/navigators"
-import { AutoImage, Button, Icon, Screen, Text, TextField } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
-import { ThemedStyle } from "@/theme"
-// import { useNavigation } from "@react-navigation/native"
+import { login } from "@/store/auth/authSlice"
+import { AppDispatch } from "@/store/store"
+import { colors, type ThemedStyle } from "@/theme"
+import type { LoginCredentials } from "@/services/api/mockApi/authTypes"
 
-interface LoginScreenProps extends AppStackScreenProps<"Login"> {}
+export interface LoginScreenProps extends AppStackScreenProps<"Login"> {}
 
-export const LoginScreen: FC<LoginScreenProps> = () => {
+export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const { theme, themed } = useAppTheme()
+  const dispatch = useDispatch<AppDispatch>()
 
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
@@ -18,12 +31,82 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
   const [passwordError, setPasswordError] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleLogin = () => {}
+  useEffect(() => {
+    // Clear username error when username is modified
+    if (username && usernameError) {
+      setUsernameError("")
+    }
+  }, [username])
+
+  useEffect(() => {
+    // Clear password error when password is modified
+    if (password && passwordError) {
+      setPasswordError("")
+    }
+  }, [password])
+
+  const validateForm = (): boolean => {
+    let isValid = true
+
+    // Validate username
+    if (!username.trim()) {
+      setUsernameError("Username is required")
+      isValid = false
+    } else if (username.trim().length < 3) {
+      setUsernameError("Username must be at least 3 characters")
+      isValid = false
+    }
+
+    // Validate password
+    if (!password) {
+      setPasswordError("Password is required")
+      isValid = false
+    } else if (password.length < 6) {
+      setPasswordError("Password must be at least 6 characters")
+      isValid = false
+    }
+
+    return isValid
+  }
+
+  const handleLogin = async () => {
+    Keyboard.dismiss()
+
+    if (!validateForm()) {
+      return
+    }
+
+    setIsSubmitting(true)
+
+    try {
+      // Create credentials object
+      const credentials: LoginCredentials = {
+        username,
+        password,
+      }
+
+      // Dispatch login action to Redux
+      await dispatch(login(credentials)).unwrap()
+
+      // If login is successful, navigate to Dashboard
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Dashboard" }],
+      })
+    } catch (error) {
+      Alert.alert("Login Failed", "Invalid username or password. Please try again.", [
+        { text: "OK" },
+      ])
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible)
   }
 
+  // Password visibility toggle icon
   const PasswordVisibilityIcon = () => (
     <Icon
       icon={passwordVisible ? "view" : "hidden"}
@@ -41,7 +124,7 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
     >
       <View style={themed($container)}>
         <View style={themed($logoContainer)}>
-          <AutoImage
+          <Image
             style={themed($logoImage)}
             source={require("../../assets/images/logo.jpeg")}
             resizeMode="contain"
@@ -94,7 +177,7 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
 const LoadingIndicator = () => {
   return (
     <View>
-      <ActivityIndicator size="small" color="white" />
+      <ActivityIndicator size="small" color={colors.background} />
     </View>
   )
 }
@@ -156,10 +239,10 @@ const $disabledButton: ThemedStyle<ViewStyle> = () => ({
   opacity: 0.7,
 })
 
-const $loginButtonText: ThemedStyle<TextStyle> = () => ({
-  color: "white",
+const $loginButtonText: ThemedStyle<TextStyle> = ({ colors, typography }) => ({
+  color: colors.palette.neutral100,
   fontSize: 16,
-  fontWeight: "bold",
+  fontFamily: typography.primary.bold,
 })
 
 const $iconContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
