@@ -28,7 +28,8 @@ import { ComponentProps } from "react"
 export type AppStackParamList = {
   // 🔥 Your screens go here
   Login: undefined
-  // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
+  Dashboard: undefined
+	// IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
 /**
@@ -62,7 +63,8 @@ const AppStack = () => {
     >
       {/** 🔥 Your screens go here */}
       <Stack.Screen name="Login" component={Screens.LoginScreen} />
-      {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
+      <Stack.Screen name="Dashboard" component={Screens.DashboardScreen} />
+			{/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>
   )
 }
