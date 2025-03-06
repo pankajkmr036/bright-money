@@ -1,7 +1,7 @@
 import { FC, useState } from "react"
-import { ImageStyle, TextStyle, View, ViewStyle } from "react-native"
+import { ActivityIndicator, ImageStyle, TextStyle, View, ViewStyle } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
-import { AutoImage, Icon, Screen, Text, TextField } from "@/components"
+import { AutoImage, Button, Icon, Screen, Text, TextField } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { ThemedStyle } from "@/theme"
 // import { useNavigation } from "@react-navigation/native"
@@ -17,6 +17,8 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
   const [usernameError, setUsernameError] = useState("")
   const [passwordError, setPasswordError] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleLogin = () => {}
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible)
@@ -74,9 +76,26 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
             containerStyle={themed($textField)}
             RightAccessory={PasswordVisibilityIcon}
           />
+
+          <Button
+            text="Sign In"
+            style={[themed($loginButton), isSubmitting && themed($disabledButton)]}
+            textStyle={themed($loginButtonText)}
+            disabled={isSubmitting}
+            onPress={handleLogin}
+            LeftAccessory={isSubmitting ? LoadingIndicator : undefined}
+          />
         </View>
       </View>
     </Screen>
+  )
+}
+
+const LoadingIndicator = () => {
+  return (
+    <View>
+      <ActivityIndicator size="small" color="white" />
+    </View>
   )
 }
 
@@ -124,6 +143,23 @@ const $subtitleText: ThemedStyle<TextStyle> = ({ colors, spacing }) => ({
 
 const $textField: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   marginBottom: spacing.lg,
+})
+
+const $loginButton: ThemedStyle<ViewStyle> = ({ colors, spacing }) => ({
+  backgroundColor: colors.tint,
+  borderWidth: 0,
+  marginVertical: spacing.lg,
+  height: 50,
+})
+
+const $disabledButton: ThemedStyle<ViewStyle> = () => ({
+  opacity: 0.7,
+})
+
+const $loginButtonText: ThemedStyle<TextStyle> = () => ({
+  color: "white",
+  fontSize: 16,
+  fontWeight: "bold",
 })
 
 const $iconContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
