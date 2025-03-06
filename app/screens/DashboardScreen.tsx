@@ -48,21 +48,9 @@ export const DashboardScreen: FC<MainTabScreenProps<"Dashboard">> = () => {
 
       {/* Drawer Menu Items */}
       <View style={themed($menuContainer)}>
-        <DrawerMenuItem
-          icon="settings"
-          label="Settings"
-          onPress={() => console.log("Settings pressed")}
-        />
-        <DrawerMenuItem
-          icon="bell"
-          label="Notifications"
-          onPress={() => console.log("Notifications pressed")}
-        />
-        <DrawerMenuItem
-          icon="lock"
-          label="Privacy"
-          onPress={() => console.log("Privacy pressed")}
-        />
+        <DrawerMenuItem icon="settings" label="Settings" onPress={() => {}} />
+        <DrawerMenuItem icon="bell" label="Notifications" onPress={() => {}} />
+        <DrawerMenuItem icon="lock" label="Privacy" onPress={() => {}} />
       </View>
 
       {/* Logout Button */}
