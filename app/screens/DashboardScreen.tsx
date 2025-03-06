@@ -36,7 +36,7 @@ export const DashboardScreen: FC<MainTabScreenProps<"Dashboard">> = () => {
 
   // Drawer content component
   const renderDrawerContent = () => (
-    <View style={themed([$drawer, $drawerInsets])}>
+    <View style={themed([$drawer, $topInset])}>
       {/* User Profile Section */}
       <View style={themed($profileSection)}>
         <View style={themed($avatarContainer)}>
@@ -80,7 +80,7 @@ export const DashboardScreen: FC<MainTabScreenProps<"Dashboard">> = () => {
       </View>
     </View>
   )
-  const $drawerInsets = useSafeAreaInsetsStyle(["top"])
+
   return (
     <Drawer
       open={open}
