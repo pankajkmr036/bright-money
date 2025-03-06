@@ -1,7 +1,7 @@
-import { FC } from "react"
+import { FC, useState } from "react"
 import { ImageStyle, TextStyle, View, ViewStyle } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
-import { AutoImage, Screen, Text } from "@/components"
+import { AutoImage, Icon, Screen, Text, TextField } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { ThemedStyle } from "@/theme"
 // import { useNavigation } from "@react-navigation/native"
@@ -9,10 +9,28 @@ import { ThemedStyle } from "@/theme"
 interface LoginScreenProps extends AppStackScreenProps<"Login"> {}
 
 export const LoginScreen: FC<LoginScreenProps> = () => {
-  // Pull in navigation via hook
-  // const navigation = useNavigation()
-
   const { theme, themed } = useAppTheme()
+
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [passwordVisible, setPasswordVisible] = useState(false)
+  const [usernameError, setUsernameError] = useState("")
+  const [passwordError, setPasswordError] = useState("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible)
+  }
+
+  const PasswordVisibilityIcon = () => (
+    <Icon
+      icon={passwordVisible ? "view" : "hidden"}
+      color={theme.colors.text}
+      onPress={togglePasswordVisibility}
+      containerStyle={themed($iconContainer)}
+    />
+  )
+
   return (
     <Screen
       preset="scroll"
@@ -27,6 +45,35 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
             resizeMode="contain"
           />
           <Text preset="heading" text="Bright Money" style={themed($logoText)} />
+        </View>
+
+        <View style={themed($formContainer)}>
+          <Text preset="subheading" text="Welcome" style={themed($welcomeText)} />
+          <Text text="Sign in to your account" style={themed($subtitleText)} />
+
+          <TextField
+            label="Username"
+            value={username}
+            onChangeText={setUsername}
+            autoCapitalize="none"
+            autoCorrect={false}
+            helper={usernameError}
+            status={usernameError ? "error" : undefined}
+            containerStyle={themed($textField)}
+          />
+
+          <TextField
+            label="Password"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={!passwordVisible}
+            autoCapitalize="none"
+            autoCorrect={false}
+            helper={passwordError}
+            status={passwordError ? "error" : undefined}
+            containerStyle={themed($textField)}
+            RightAccessory={PasswordVisibilityIcon}
+          />
         </View>
       </View>
     </Screen>
@@ -58,4 +105,27 @@ const $logoImage: ThemedStyle<ImageStyle> = ({ spacing }) => ({
 
 const $logoText: ThemedStyle<TextStyle> = ({ colors }) => ({
   color: colors.tint,
+})
+
+const $formContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  marginBottom: spacing.lg,
+})
+
+const $welcomeText: ThemedStyle<TextStyle> = ({ spacing }) => ({
+  marginBottom: spacing.xs,
+  textAlign: "center",
+})
+
+const $subtitleText: ThemedStyle<TextStyle> = ({ colors, spacing }) => ({
+  marginBottom: spacing.xl,
+  textAlign: "center",
+  color: colors.textDim,
+})
+
+const $textField: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  marginBottom: spacing.lg,
+})
+
+const $iconContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  padding: spacing.xxs,
 })
