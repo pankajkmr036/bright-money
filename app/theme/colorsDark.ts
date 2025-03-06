@@ -1,32 +1,32 @@
 const palette = {
-  neutral900: "#FFFFFF",
-  neutral800: "#F4F2F1",
-  neutral700: "#D7CEC9",
-  neutral600: "#B6ACA6",
-  neutral500: "#978F8A",
-  neutral400: "#564E4A",
-  neutral300: "#3C3836",
-  neutral200: "#191015",
-  neutral100: "#000000",
+  neutral900: "#FFFFFF", // White (reversed for dark mode)
+  neutral800: "#F4F5F4", // Very light green-gray
+  neutral700: "#E6EBE6", // Light green-gray
+  neutral600: "#B6C5B6", // Medium light green-gray
+  neutral500: "#7A8A7A", // Medium green-gray
+  neutral400: "#5A6A5A", // Medium dark green-gray
+  neutral300: "#3C463C", // Dark green-gray
+  neutral200: "#252825", // Very dark green-gray (background in dark mode)
+  neutral100: "#0F120F", // Almost black
 
-  primary600: "#F4E0D9",
-  primary500: "#E8C1B4",
-  primary400: "#DDA28E",
-  primary300: "#D28468",
-  primary200: "#C76542",
-  primary100: "#A54F31",
+  primary600: "#E3F9E7", // Very light green
+  primary500: "#C7F3D0", // Light green
+  primary400: "#86E698", // Medium light green
+  primary300: "#4AD864", // Medium green
+  primary200: "#00C928", // Main green
+  primary100: "#00A021", // Dark green
 
-  secondary500: "#DCDDE9",
-  secondary400: "#BCC0D6",
-  secondary300: "#9196B9",
-  secondary200: "#626894",
-  secondary100: "#41476E",
+  secondary500: "#E0F5E9", // Very light teal
+  secondary400: "#C1EBDA", // Light teal
+  secondary300: "#93D7BC", // Medium light teal
+  secondary200: "#65C39E", // Medium teal
+  secondary100: "#37AF80", // Teal
 
-  accent500: "#FFEED4",
-  accent400: "#FFE1B2",
-  accent300: "#FDD495",
-  accent200: "#FBC878",
-  accent100: "#FFBB50",
+  accent500: "#FFF9E6", // Very light yellow
+  accent400: "#FFEFC3", // Light yellow
+  accent300: "#FFE59F", // Medium light yellow
+  accent200: "#FFDB7B", // Medium yellow
+  accent100: "#FFCA43", // Yellow
 
   angry100: "#F2D6CD",
   angry500: "#C03403",
