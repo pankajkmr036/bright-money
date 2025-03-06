@@ -14,6 +14,7 @@ import { ComponentProps, useEffect } from "react"
 import { RootState, useAppDispatch, useAppSelector } from "@/store/store"
 import { MainNavigator } from "./MainNavigator"
 import { checkAuth } from "@/store/auth/authSlice"
+import { ActivityIndicator } from "react-native"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -54,13 +55,18 @@ const AppStack = () => {
     theme: { colors },
   } = useAppTheme()
 
-  const { isAuthenticated } = useAppSelector((state: RootState) => state.auth)
+  const { isAuthenticated, isLoading } = useAppSelector((state: RootState) => state.auth)
   const dispatch = useAppDispatch()
 
   // Check for existing authentication on app load
   useEffect(() => {
     dispatch(checkAuth())
   }, [dispatch])
+
+  console.log(isLoading)
+  if (isLoading) {
+    return <ActivityIndicator size="large" color={colors.tint} style={{ flex: 1 }} />
+  }
 
   return (
     <Stack.Navigator
