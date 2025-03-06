@@ -35,7 +35,7 @@ export type AppStackParamList = {
  * This is a list of all the route names that will exit the app if the back button
  * is pressed while in that screen. Only affects Android.
  */
-const exitRoutes = Config.exitRoutes
+const exitRoutes = [...Config.exitRoutes, "Login"]
 
 export type AppStackScreenProps<T extends keyof AppStackParamList> = NativeStackScreenProps<
   AppStackParamList,
