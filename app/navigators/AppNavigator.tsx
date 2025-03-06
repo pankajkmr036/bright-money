@@ -11,6 +11,8 @@ import Config from "../config"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 import { useAppTheme, useThemeProvider } from "@/utils/useAppTheme"
 import { ComponentProps } from "react"
+import { RootState, useAppSelector } from "@/store/store"
+import { MainNavigator } from "./MainNavigator"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -28,8 +30,8 @@ import { ComponentProps } from "react"
 export type AppStackParamList = {
   // 🔥 Your screens go here
   Login: undefined
-  Dashboard: undefined
-	// IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
+  Main: undefined
+  // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
 /**
@@ -51,6 +53,8 @@ const AppStack = () => {
     theme: { colors },
   } = useAppTheme()
 
+  const { isAuthenticated } = useAppSelector((state: RootState) => state.auth)
+
   return (
     <Stack.Navigator
       screenOptions={{
@@ -60,11 +64,20 @@ const AppStack = () => {
           backgroundColor: colors.background,
         },
       }}
+      initialRouteName={isAuthenticated ? "Main" : "Login"}
     >
       {/** 🔥 Your screens go here */}
-      <Stack.Screen name="Login" component={Screens.LoginScreen} />
-      <Stack.Screen name="Dashboard" component={Screens.DashboardScreen} />
-			{/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
+
+      {isAuthenticated ? (
+        <>
+          <Stack.Screen name="Main" component={MainNavigator} />
+        </>
+      ) : (
+        <>
+          <Stack.Screen name="Login" component={Screens.LoginScreen} />
+        </>
+      )}
+      {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>
   )
 }
