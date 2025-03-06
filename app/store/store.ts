@@ -1,9 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit"
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux"
 import authReducer from "./auth/authSlice"
+import dashboardReducer from "./dashboard/dashboardSlice"
+import transactionsReducer from "./transactions/transactionsSlice"
+import budgetReducer from "./budget/budgetSlice"
+
 export const store = configureStore({
   reducer: {
     auth: authReducer,
+    dashboard: dashboardReducer,
+    transactions: transactionsReducer,
+    budget: budgetReducer,
   },
 })
 
