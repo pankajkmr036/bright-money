@@ -1,24 +1,37 @@
-import { FC } from "react"
-import { ViewStyle } from "react-native"
-import { AppStackScreenProps } from "@/navigators"
+import React, { FC } from "react"
+import { View, ViewStyle, TextStyle } from "react-native"
 import { Screen, Text } from "@/components"
-// import { useNavigation } from "@react-navigation/native"
+import { useAppTheme } from "@/utils/useAppTheme"
+import { useSafeAreaInsetsStyle } from "../utils/useSafeAreaInsetsStyle"
+import type { ThemedStyle } from "@/theme"
+import { MainTabScreenProps } from "@/navigators/MainNavigator"
 
-interface TransactionScreenProps extends AppStackScreenProps<"Transaction"> {}
-
-
-export const TransactionScreen: FC<TransactionScreenProps> = () => {
-
-  // Pull in navigation via hook
-  // const navigation = useNavigation()
+export const TransactionScreen: FC<MainTabScreenProps<"Transactions">> = () => {
+  const { themed } = useAppTheme()
+  const $topInset = useSafeAreaInsetsStyle(["top"])
   return (
-    <Screen style={$root} preset="scroll">
-      <Text text="transaction" />
+    <Screen
+      preset="scroll"
+      contentContainerStyle={themed($screenContentContainer)}
+      safeAreaEdges={["bottom"]}
+    >
+      <View style={[themed($headerContainer), $topInset]}>
+        <Text preset="heading" text="Transactions" style={themed($headerText)} />
+      </View>
     </Screen>
   )
-
 }
 
-const $root: ViewStyle = {
+// Styles
+const $screenContentContainer: ThemedStyle<ViewStyle> = () => ({
   flex: 1,
-}
+})
+
+const $headerContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  paddingHorizontal: spacing.md,
+  paddingVertical: spacing.md,
+})
+
+const $headerText: ThemedStyle<TextStyle> = () => ({
+  textAlign: "center",
+})
