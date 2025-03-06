@@ -1,35 +1,28 @@
-import React, { useState, useEffect } from "react"
-import {
-  View,
-  ViewStyle,
-  TextStyle,
-  ActivityIndicator,
-  Keyboard,
-  Alert,
-  Image,
-  ImageStyle,
-} from "react-native"
-import { useDispatch } from "react-redux"
+import React, { useState, useEffect, useRef, useMemo, ComponentType } from "react"
+import { View, ViewStyle, TextStyle, ActivityIndicator, Keyboard, TextInput } from "react-native"
+import { useAppDispatch, useAppSelector } from "@/store/store"
 import { Screen, Text, TextField, Button, Icon } from "@/components"
 import { AppStackScreenProps } from "@/navigators"
 import { useAppTheme } from "@/utils/useAppTheme"
-import { login } from "@/store/auth/authSlice"
-import { AppDispatch } from "@/store/store"
+import { login, clearError } from "@/store/auth/authSlice"
 import { colors, type ThemedStyle } from "@/theme"
-import type { LoginCredentials } from "@/services/api/mockApi/authTypes"
+import type { TextFieldAccessoryProps } from "@/components/TextField"
 
 export interface LoginScreenProps extends AppStackScreenProps<"Login"> {}
 
-export const LoginScreen: React.FC<LoginScreenProps> = () => {
+export const LoginScreen: React.FC<LoginScreenProps> = ({}) => {
   const { theme, themed } = useAppTheme()
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
+  const { isLoading, error } = useAppSelector((state) => state.auth)
 
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-  const [passwordVisible, setPasswordVisible] = useState(false)
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
   const [usernameError, setUsernameError] = useState("")
   const [passwordError, setPasswordError] = useState("")
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [attemptsCount, setAttemptsCount] = useState(0)
+
+  const passwordInput = useRef<TextInput>(null)
 
   useEffect(() => {
     // Clear username error when username is modified
@@ -44,6 +37,13 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
       setPasswordError("")
     }
   }, [password])
+
+  // Clear any Redux error when component unmounts
+  useEffect(() => {
+    return () => {
+      dispatch(clearError())
+    }
+  }, [dispatch])
 
   const validateForm = (): boolean => {
     let isValid = true
@@ -71,64 +71,54 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
 
   const handleLogin = async () => {
     Keyboard.dismiss()
+    setAttemptsCount(attemptsCount + 1)
 
     if (!validateForm()) {
       return
     }
 
-    setIsSubmitting(true)
-
     try {
-      // Create credentials object
-      const credentials: LoginCredentials = {
-        username,
-        password,
-      }
-
-      // Dispatch login action to Redux
-      await dispatch(login(credentials)).unwrap()
+      await dispatch(login({ username, password })).unwrap()
+      // If we reach here, login was successful and the navigation will be handled by AppNavigator
     } catch (error) {
-      Alert.alert("Login Failed", "Invalid username or password. Please try again.", [
-        { text: "OK" },
-      ])
-    } finally {
-      setIsSubmitting(false)
+      // Error is handled by the Redux slice and will be available in the error state
     }
   }
 
   const togglePasswordVisibility = () => {
-    setPasswordVisible(!passwordVisible)
+    setIsPasswordVisible(!isPasswordVisible)
   }
 
-  // Password visibility toggle icon
-  const PasswordVisibilityIcon = () => (
-    <Icon
-      icon={passwordVisible ? "view" : "hidden"}
-      color={theme.colors.text}
-      onPress={togglePasswordVisibility}
-      containerStyle={themed($iconContainer)}
-    />
+  // Password visibility toggle icon component
+  const PasswordRightAccessory: ComponentType<TextFieldAccessoryProps> = useMemo(
+    () =>
+      function PasswordRightAccessory(props: TextFieldAccessoryProps) {
+        return (
+          <Icon
+            icon={isPasswordVisible ? "view" : "hidden"}
+            color={theme.colors.text}
+            containerStyle={props.style}
+            onPress={togglePasswordVisibility}
+          />
+        )
+      },
+    [isPasswordVisible, theme.colors.text],
   )
 
   return (
     <Screen
-      preset="scroll"
+      preset="auto"
       contentContainerStyle={themed($screenContentContainer)}
       safeAreaEdges={["top", "bottom"]}
     >
       <View style={themed($container)}>
-        <View style={themed($logoContainer)}>
-          <Image
-            style={themed($logoImage)}
-            source={require("../../assets/images/logo.jpeg")}
-            resizeMode="contain"
-          />
-          <Text preset="heading" text="Bright Money" style={themed($logoText)} />
-        </View>
-
         <View style={themed($formContainer)}>
           <Text preset="subheading" text="Welcome" style={themed($welcomeText)} />
           <Text text="Sign in to your account" style={themed($subtitleText)} />
+
+          {attemptsCount > 2 && (
+            <Text text="Hint: Try 'demo' and 'password123'" size="xs" style={themed($hint)} />
+          )}
 
           <TextField
             label="Username"
@@ -139,29 +129,34 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
             helper={usernameError}
             status={usernameError ? "error" : undefined}
             containerStyle={themed($textField)}
+            onSubmitEditing={() => passwordInput.current?.focus()}
           />
 
           <TextField
+            ref={passwordInput}
             label="Password"
             value={password}
             onChangeText={setPassword}
-            secureTextEntry={!passwordVisible}
+            secureTextEntry={!isPasswordVisible}
             autoCapitalize="none"
             autoCorrect={false}
             helper={passwordError}
             status={passwordError ? "error" : undefined}
             containerStyle={themed($textField)}
-            RightAccessory={PasswordVisibilityIcon}
+            RightAccessory={PasswordRightAccessory}
+            onSubmitEditing={handleLogin}
           />
+
+          {error && <Text text={error} style={themed($errorText)} />}
 
           <Button
             text="Sign In"
-            style={[themed($loginButton), isSubmitting && themed($disabledButton)]}
+            style={[themed($loginButton), isLoading && themed($disabledButton)]}
             textStyle={themed($loginButtonText)}
-            disabled={isSubmitting}
+            disabled={isLoading}
             onPress={handleLogin}
             preset="filled"
-            LeftAccessory={isSubmitting ? LoadingIndicator : undefined}
+            LeftAccessory={isLoading ? LoadingIndicator : undefined}
           />
         </View>
       </View>
@@ -172,7 +167,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
 const LoadingIndicator = () => {
   return (
     <View>
-      <ActivityIndicator size="small" color={colors.background} />
+      <ActivityIndicator size="small" color={colors.palette.neutral100} />
     </View>
   )
 }
@@ -188,24 +183,8 @@ const $container: ThemedStyle<ViewStyle> = ({ colors, spacing }) => ({
   paddingHorizontal: spacing.lg,
 })
 
-const $logoContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  alignItems: "center",
-  marginTop: spacing.xxxl,
-  marginBottom: spacing.xxxl,
-})
-
-const $logoImage: ThemedStyle<ImageStyle> = ({ spacing }) => ({
-  width: 80,
-  height: 80,
-  marginBottom: spacing.md,
-})
-
-const $logoText: ThemedStyle<TextStyle> = ({ colors }) => ({
-  color: colors.tint,
-})
-
 const $formContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  marginBottom: spacing.lg,
+  marginVertical: spacing.xl,
 })
 
 const $welcomeText: ThemedStyle<TextStyle> = ({ spacing }) => ({
@@ -219,8 +198,20 @@ const $subtitleText: ThemedStyle<TextStyle> = ({ colors, spacing }) => ({
   color: colors.textDim,
 })
 
+const $hint: ThemedStyle<TextStyle> = ({ colors, spacing }) => ({
+  color: colors.tint,
+  marginBottom: spacing.md,
+  textAlign: "center",
+})
+
 const $textField: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   marginBottom: spacing.lg,
+})
+
+const $errorText: ThemedStyle<TextStyle> = ({ colors, spacing }) => ({
+  color: colors.error,
+  textAlign: "center",
+  marginBottom: spacing.md,
 })
 
 const $loginButton: ThemedStyle<ViewStyle> = ({ colors, spacing }) => ({
@@ -238,8 +229,4 @@ const $loginButtonText: ThemedStyle<TextStyle> = ({ colors, typography }) => ({
   color: colors.palette.neutral100,
   fontSize: 16,
   fontFamily: typography.primary.bold,
-})
-
-const $iconContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  padding: spacing.xxs,
 })
