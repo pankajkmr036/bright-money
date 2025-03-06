@@ -11,6 +11,7 @@ module.exports = {
     "prettier",
   ],
   plugins: ["reactotron", "prettier"],
+
   rules: {
     "prettier/prettier": "error",
     // typescript-eslint
@@ -35,9 +36,10 @@ module.exports = {
         paths: [
           // Prefer named exports from 'react' instead of importing `React`
           {
-            name: "react",
-            importNames: ["default"],
-            message: "Import named exports from 'react' instead.",
+            "name": "react",
+            "importNames": ["default"],
+            "message": "Import named exports from 'react' instead.",
+            "@/*": ["src/*"],
           },
         ],
       },
