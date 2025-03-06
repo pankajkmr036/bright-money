@@ -26,7 +26,6 @@ import { ComponentProps } from "react"
  *   https://reactnavigation.org/docs/typescript/#organizing-types
  */
 export type AppStackParamList = {
-  Welcome: undefined
   // 🔥 Your screens go here
   Login: undefined
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
