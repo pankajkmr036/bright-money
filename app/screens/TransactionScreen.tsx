@@ -7,6 +7,7 @@ import {
   View,
   ViewStyle,
   SectionList,
+  Platform,
 } from "react-native"
 import { Screen, Text, Icon, EmptyState } from "@/components"
 import { MainTabScreenProps } from "@/navigators/MainNavigator"
@@ -14,7 +15,7 @@ import { useAppTheme } from "@/utils/useAppTheme"
 import { useAppDispatch, useAppSelector } from "@/store/store"
 import { useSafeAreaInsetsStyle } from "../utils/useSafeAreaInsetsStyle"
 import type { ThemedStyle } from "@/theme"
-import { Transaction, FilterTab } from "@/types"
+import { Transaction, FilterTab, TransactionFilter } from "@/types"
 import {
   fetchTransactions,
   fetchCategories,
@@ -24,12 +25,14 @@ import {
   updateFilter,
   applyFilters,
   searchTransactions,
+  resetFilters,
 } from "@/store/transactions/transactionsSlice"
 import {
   TransactionItem,
   FilterTabs,
   SearchBar,
   TransactionFilterModal,
+  AppliedFilters,
 } from "@/components/Transaction"
 
 // Helper type for the section data
@@ -64,6 +67,18 @@ export const TransactionScreen: FC<MainTabScreenProps<"Transactions">> = () => {
     dispatch(fetchCategories())
   }, [dispatch])
 
+  // Get active filters for the UI
+  const activeFilters = useMemo(() => {
+    const filters = []
+
+    if (filter.sort !== "new to old") filters.push("sort")
+    if (filter.type) filters.push("type")
+    if (filter.categories.length > 0) filters.push("categories")
+    if (filter.range.min > 0 || filter.range.max < 500000) filters.push("range")
+
+    return filters
+  }, [filter])
+
   // Handle tab press
   const handleTabPress = useCallback(
     (tab: FilterTab) => {
@@ -92,6 +107,28 @@ export const TransactionScreen: FC<MainTabScreenProps<"Transactions">> = () => {
     }
   }, [dispatch, searchQuery])
 
+  // Clear all filters
+  const handleClearFilters = useCallback(() => {
+    dispatch(resetFilters())
+    dispatch(fetchTransactions())
+  }, [dispatch])
+
+  // Apply filter from modal
+  const handleApplyFilter = useCallback(
+    (updatedFilter: TransactionFilter) => {
+      dispatch(updateFilter(updatedFilter))
+      dispatch(applyFilters(updatedFilter))
+    },
+    [dispatch],
+  )
+
+  // Handle refresh
+  const handleRefresh = useCallback(async () => {
+    setRefreshing(true)
+    await dispatch(fetchTransactions())
+    setRefreshing(false)
+  }, [dispatch])
+
   // Group transactions by month for section list
   const sectionedTransactions = useMemo(() => {
     if (!filteredTransactions.length) return []
@@ -100,7 +137,7 @@ export const TransactionScreen: FC<MainTabScreenProps<"Transactions">> = () => {
     const grouped = filteredTransactions.reduce(
       (acc, transaction) => {
         const date = new Date(transaction.date)
-        const monthYear = `${date.toLocaleString("default", { month: "long" })} ${date.getFullYear()}`
+        const monthYear = `${date.toLocaleString("default", { month: "long" }).toUpperCase()} ${date.getFullYear()}`
 
         if (!acc[monthYear]) {
           acc[monthYear] = []
@@ -118,27 +155,11 @@ export const TransactionScreen: FC<MainTabScreenProps<"Transactions">> = () => {
     })) as TransactionSection[]
   }, [filteredTransactions])
 
-  // Apply filter from modal
-  const handleApplyFilter = useCallback(
-    (updatedFilter) => {
-      dispatch(updateFilter(updatedFilter))
-      dispatch(applyFilters(updatedFilter))
-    },
-    [dispatch],
-  )
-
-  // Handle refresh
-  const handleRefresh = useCallback(async () => {
-    setRefreshing(true)
-    await dispatch(fetchTransactions())
-    setRefreshing(false)
-  }, [dispatch])
-
   // Render each section header
   const renderSectionHeader = useCallback(
     ({ section }: { section: TransactionSection }) => (
       <View style={themed($sectionHeader)}>
-        <Text text={section.title.toUpperCase()} style={themed($sectionTitle)} />
+        <Text text={section.title} style={themed($sectionTitle)} />
       </View>
     ),
     [themed],
@@ -161,7 +182,10 @@ export const TransactionScreen: FC<MainTabScreenProps<"Transactions">> = () => {
           />
         ) : (
           <View style={themed($headerContent)}>
-            <Text preset="heading" text="transactions" style={themed($headerText)} />
+            <View style={themed($titleContainer)}>
+              <Icon icon="back" size={22} containerStyle={themed($backButton)} />
+              <Text preset="heading" text="transactions" style={themed($headerText)} />
+            </View>
             <TouchableOpacity
               style={themed($searchButton)}
               onPress={handleSearchToggle}
@@ -173,7 +197,44 @@ export const TransactionScreen: FC<MainTabScreenProps<"Transactions">> = () => {
         )}
       </View>
 
-      {!isSearchMode && <FilterTabs activeTab={activeFilterTab} onTabPress={handleTabPress} />}
+      {/* Bank account info (this is just a placeholder as per the design) */}
+      {!isSearchMode && (
+        <View style={themed($bankInfoContainer)}>
+          <Icon icon="ladybug" size={24} containerStyle={themed($bankIcon)} />
+          <Text text="at 4:00 pm today" style={themed($bankInfoText)} />
+        </View>
+      )}
+
+      {/* Applied filters */}
+      <AppliedFilters
+        filter={filter}
+        activeFilters={activeFilters}
+        onClearFilters={handleClearFilters}
+        onTabPress={handleTabPress}
+      />
+
+      {/* Filter tabs */}
+      {!isSearchMode && (
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={themed($filterTabsContainer)}
+        >
+          {["NEW TO OLD", "AMOUNT", "TYPE", "MONTH", "CATEGORY"].map((tab) => (
+            <TouchableOpacity
+              key={tab}
+              style={[themed($filterTab), tab === "NEW TO OLD" && themed($activeFilterTab)]}
+              onPress={() => handleTabPress(tab as FilterTab)}
+            >
+              {tab === "NEW TO OLD" ? (
+                <Text text={tab} style={themed($activeFilterTabText)} />
+              ) : (
+                <Text text={tab} style={themed($filterTabText)} />
+              )}
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      )}
 
       {isLoading && !refreshing ? (
         <View style={themed($loadingContainer)}>
@@ -236,6 +297,15 @@ const $headerContent: ThemedStyle<ViewStyle> = () => ({
   width: "100%",
 })
 
+const $titleContainer: ThemedStyle<ViewStyle> = () => ({
+  flexDirection: "row",
+  alignItems: "center",
+})
+
+const $backButton: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  marginRight: spacing.sm,
+})
+
 const $headerText: ThemedStyle<TextStyle> = () => ({
   fontSize: 32,
   letterSpacing: -1,
@@ -248,6 +318,53 @@ const $searchButton: ThemedStyle<ViewStyle> = ({ spacing }) => ({
 
 const $iconColor: ThemedStyle<{ color: string }> = ({ colors }) => ({
   color: colors.text,
+})
+
+const $bankInfoContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  flexDirection: "row",
+  alignItems: "center",
+  paddingHorizontal: spacing.lg,
+  marginBottom: spacing.sm,
+})
+
+const $bankIcon: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  marginRight: spacing.xs,
+})
+
+const $bankInfoText: ThemedStyle<TextStyle> = ({ colors }) => ({
+  color: colors.textDim,
+  fontSize: 14,
+})
+
+const $filterTabsContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  paddingHorizontal: spacing.lg,
+  paddingVertical: spacing.xs,
+})
+
+const $filterTab: ThemedStyle<ViewStyle> = ({ spacing, colors }) => ({
+  paddingHorizontal: spacing.md,
+  paddingVertical: spacing.xs,
+  borderRadius: 20,
+  borderWidth: 1,
+  borderColor: colors.palette.neutral300,
+  marginRight: spacing.sm,
+  backgroundColor: colors.palette.neutral200,
+})
+
+const $activeFilterTab: ThemedStyle<ViewStyle> = ({ colors }) => ({
+  borderColor: colors.palette.neutral800,
+  backgroundColor: colors.palette.neutral100,
+})
+
+const $filterTabText: ThemedStyle<TextStyle> = ({ colors }) => ({
+  fontSize: 14,
+  color: colors.textDim,
+})
+
+const $activeFilterTabText: ThemedStyle<TextStyle> = ({ colors }) => ({
+  fontSize: 14,
+  color: colors.text,
+  fontWeight: "600",
 })
 
 const $loadingContainer: ThemedStyle<ViewStyle> = () => ({
@@ -282,3 +399,6 @@ const $sectionTitle: ThemedStyle<TextStyle> = ({ colors }) => ({
   fontWeight: "600",
   color: colors.text,
 })
+
+// ScrollView component for horizontal scrolling of filter tabs
+const ScrollView = Platform.OS === "web" ? View : require("react-native").ScrollView

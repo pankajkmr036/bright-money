@@ -1,6 +1,12 @@
 // app/store/transactions/transactionsSlice.ts
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
-import { Transaction, TransactionFilter, TransactionCategory, FilterTab } from "@/types"
+import {
+  Transaction,
+  TransactionFilter,
+  TransactionType,
+  TransactionCategory,
+  FilterTab,
+} from "@/types"
 import { transactionApiService } from "@/services/api/mockApi/transactionsService"
 
 interface TransactionsState {
@@ -9,8 +15,8 @@ interface TransactionsState {
   categories: TransactionCategory[]
   filter: TransactionFilter
   isFilterModalVisible: boolean
-  isSearchMode: boolean
   activeFilterTab: FilterTab
+  isSearchMode: boolean
   isLoading: boolean
   isSearching: boolean
   error: string | null
@@ -32,8 +38,8 @@ const initialState: TransactionsState = {
   categories: [],
   filter: initialFilter,
   isFilterModalVisible: false,
+  activeFilterTab: "NEW TO OLD",
   isSearchMode: false,
-  activeFilterTab: "MOST RECENT",
   isLoading: false,
   isSearching: false,
   error: null,

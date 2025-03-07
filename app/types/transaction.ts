@@ -1,4 +1,4 @@
-// app/models/transaction.ts
+// app/types/transaction.ts
 export interface Transaction {
   id: string
   merchantName: string
@@ -47,11 +47,13 @@ export type TransactionCategory =
   | "travel"
   | "investment"
   | "income"
+  | "people"
+  | "dividend"
   | "other"
 
 export type SortOption = "new to old" | "old to new" | "high to low" | "low to high"
 
-export type FilterTab = "MOST RECENT" | "CATEGORY" | "RANGE" | "TYPE" | "MONTH"
+export type FilterTab = "NEW TO OLD" | "AMOUNT" | "TYPE" | "MONTH" | "CATEGORY"
 
 export interface TransactionFilter {
   sort: SortOption
