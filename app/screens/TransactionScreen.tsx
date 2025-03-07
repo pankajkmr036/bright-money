@@ -211,7 +211,7 @@ export const TransactionScreen: FC<MainTabScreenProps<"Transactions">> = () => {
         <View>
           <FilterTabs
             tabs={["NEW TO OLD", "AMOUNT", "TYPE", "MONTH", "CATEGORY"]}
-            activeTab="NEW TO OLD"
+            activeTab={activeFilterTab}
             onTabPress={handleTabPress}
           />
         </View>

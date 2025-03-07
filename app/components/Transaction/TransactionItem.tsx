@@ -33,23 +33,6 @@ export const TransactionItem = ({ transaction, onPress }: TransactionItemProps) 
     return nameParts[0].slice(0, 2).toUpperCase()
   }
 
-  // Helper functions for merchant info display
-  const getCategoryIcon = (category: TransactionCategory) => {
-    // Replace with appropriate icons for each category
-    switch (category) {
-      case "medical":
-        return "bell"
-      case "food and drinks":
-        return "menu"
-      case "investment":
-        return "settings"
-      case "banking and finance":
-        return "lock"
-      default:
-        return "settings"
-    }
-  }
-
   const handlePress = () => {
     if (onPress) onPress(transaction)
   }
@@ -62,7 +45,12 @@ export const TransactionItem = ({ transaction, onPress }: TransactionItemProps) 
 
       <View style={$contentContainer}>
         <View style={$topRow}>
-          <Text text={transaction.merchantName} style={themed($merchantName)} />
+          <Text
+            text={transaction.merchantName}
+            style={themed($merchantName)}
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          />
           <Text text={displayAmount} style={[themed($amount), isIncome && themed($incomeAmount)]} />
         </View>
 
@@ -85,17 +73,18 @@ const $container: ThemedStyle<ViewStyle> = ({ spacing, colors }) => ({
 })
 
 const $avatarContainer: ThemedStyle<ViewStyle> = ({ colors }) => ({
-  width: 48,
-  height: 48,
+  width: 28,
+  height: 28,
   borderRadius: 24,
   backgroundColor: colors.palette.neutral200,
   justifyContent: "center",
   alignItems: "center",
+  alignSelf: "center",
   marginRight: 16,
 })
 
 const $avatarText: ThemedStyle<TextStyle> = ({ colors }) => ({
-  fontSize: 18,
+  fontSize: 14,
   fontWeight: "bold",
   color: colors.text,
 })
@@ -118,15 +107,18 @@ const $bottomRow: ViewStyle = {
   alignItems: "center",
 }
 
-const $merchantName: ThemedStyle<TextStyle> = ({ typography }) => ({
+const $merchantName: ThemedStyle<TextStyle> = ({ typography, colors }) => ({
   fontSize: 16,
   fontWeight: "500",
   fontFamily: typography.primary.medium,
+  maxWidth: "70%", // Limit merchant name width
+  color: colors.text,
 })
 
-const $amount: ThemedStyle<TextStyle> = () => ({
-  fontSize: 16,
+const $amount: ThemedStyle<TextStyle> = ({ colors }) => ({
+  fontSize: 14,
   fontWeight: "500",
+  color: colors.text,
 })
 
 const $incomeAmount: ThemedStyle<TextStyle> = () => ({
