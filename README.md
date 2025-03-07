@@ -1,77 +1,117 @@
-# Welcome to your new ignited app!
+# Bright Money - Personal Finance App
 
-> The latest and greatest boilerplate for Infinite Red opinions
+A comprehensive mobile application for managing personal finances, incorporating budget tracking, expense management, and financial insights.
 
-This is the boilerplate that [Infinite Red](https://infinite.red) uses as a way to test bleeding-edge changes to our React Native stack.
+## Overview
 
-- [Quick start documentation](https://github.com/infinitered/ignite/blob/master/docs/boilerplate/Boilerplate.md)
-- [Full documentation](https://github.com/infinitered/ignite/blob/master/docs/README.md)
+This React Native application allows users to:
+
+- Track their financial information including total balance and spending trends
+- Manage transactions with search and filtering capabilities
+- Set and monitor budgets for different spending categories
+- View spending insights and analyses
+- Get real-time currency exchange rates
+
+## Features
+
+- **Authentication**: Secure login with validation
+- **Dashboard**: Financial summary with total balance, budget overview, and recent transactions
+- **Transaction Management**: View, filter, search, and categorize expenses
+- **Budget Tracking**: Monitor category spending with progress indicators
+- **Currency Conversion**: Support for multiple currencies using real-time exchange rates
+- **Performance Optimization**: Efficient data fetching and UI rendering
+
+## Tech Stack
+
+- **Framework**: React Native (Ignite Boilerplate)
+- **State Management**: Redux Toolkit
+- **Navigation**: React Navigation 6
+- **Styling**: Themed components with dynamic light/dark mode support
+- **API Integration**: Apisauce for API requests
+- **Data Persistence**: MMKV Storage
+- **Internationalization**: i18next with RTL support
+- **UI Components**: Custom components based on Ignite boilerplate
+
+## Project Structure
+
+```
+app/
+├── components/      # Reusable UI components
+├── config/          # App configuration
+├── hooks/           # Custom React hooks
+├── i18n/            # Internationalization
+├── navigators/      # Navigation configuration
+├── screens/         # App screens
+├── services/        # API services
+├── store/           # Redux store and slices
+├── theme/           # Theming system
+├── types/           # TypeScript type definitions
+└── utils/           # Utility functions
+```
 
 ## Getting Started
 
-```bash
-npm install
-npm run start
+### Prerequisites
+- Environment setup: https://reactnative.dev/docs/set-up-your-environment
+- Node.js (>=20.0.0)
+- npm or yarn
+- iOS Simulator or Android Emulator (for mobile testing)
+
+### Installation
+
+1. Clone the repository:
+
+   ```
+   git clone https://github.com/yourusername/bright-money.git
+   cd bright-money
+   ```
+
+2. Install dependencies:
+
+   ```
+   npm install
+   ```
+
+3. Start the development server:
+
+   ```
+   npm run start
+   ```
+
+4. Run on specific platform:
+
+   ```
+   # For iOS
+   npm run ios
+
+   # For Android
+   npm run android
+
+## Development
+
+### Demo Credentials
+
+For testing the app, use the following credentials:
+
+- Username: `demo`
+- Password: `password123`
+
+### Environment Variables
+
+The app uses environment configuration files located in `app/config/`:
+
+- `config.base.ts`: Base configuration
+- `config.dev.ts`: Development environment settings
+- `config.prod.ts`: Production environment settings
+
+### Testing
+
+Run tests with:
+
+```
+npm test
 ```
 
-To make things work on your local simulator, or on your phone, you need first to [run `eas build`](https://github.com/infinitered/ignite/blob/master/docs/expo/EAS.md). We have many shortcuts on `package.json` to make it easier:
+## License
 
-```bash
-npm run build:ios:sim # build for ios simulator
-npm run build:ios:dev # build for ios device
-npm run build:ios:prod # build for ios device
-```
-
-### `./assets` directory
-
-This directory is designed to organize and store various assets, making it easy for you to manage and use them in your application. The assets are further categorized into subdirectories, including `icons` and `images`:
-
-```tree
-assets
-├── icons
-└── images
-```
-
-**icons**
-This is where your icon assets will live. These icons can be used for buttons, navigation elements, or any other UI components. The recommended format for icons is PNG, but other formats can be used as well.
-
-Ignite comes with a built-in `Icon` component. You can find detailed usage instructions in the [docs](https://github.com/infinitered/ignite/blob/master/docs/boilerplate/app/components/Icon.md).
-
-**images**
-This is where your images will live, such as background images, logos, or any other graphics. You can use various formats such as PNG, JPEG, or GIF for your images.
-
-Another valuable built-in component within Ignite is the `AutoImage` component. You can find detailed usage instructions in the [docs](https://github.com/infinitered/ignite/blob/master/docs/Components-AutoImage.md).
-
-How to use your `icon` or `image` assets:
-
-```typescript
-import { Image } from 'react-native';
-
-const MyComponent = () => {
-  return (
-    <Image source={require('../assets/images/my_image.png')} />
-  );
-};
-```
-
-## Running Maestro end-to-end tests
-
-Follow our [Maestro Setup](https://ignitecookbook.com/docs/recipes/MaestroSetup) recipe.
-
-## Next Steps
-
-### Ignite Cookbook
-
-[Ignite Cookbook](https://ignitecookbook.com/) is an easy way for developers to browse and share code snippets (or “recipes”) that actually work.
-
-### Upgrade Ignite boilerplate
-
-Read our [Upgrade Guide](https://ignitecookbook.com/docs/recipes/UpdatingIgnite) to learn how to upgrade your Ignite project.
-
-## Community
-
-⭐️ Help us out by [starring on GitHub](https://github.com/infinitered/ignite), filing bug reports in [issues](https://github.com/infinitered/ignite/issues) or [ask questions](https://github.com/infinitered/ignite/discussions).
-
-💬 Join us on [Slack](https://join.slack.com/t/infiniteredcommunity/shared_invite/zt-1f137np4h-zPTq_CbaRFUOR_glUFs2UA) to discuss.
-
-📰 Make our Editor-in-chief happy by [reading the React Native Newsletter](https://reactnativenewsletter.com/).
+This project is licensed under the MIT License - see the LICENSE file for details.
