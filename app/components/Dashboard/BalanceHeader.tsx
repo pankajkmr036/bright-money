@@ -36,20 +36,24 @@ const $container: ThemedStyle<ViewStyle> = ({ spacing }) => ({
 })
 
 const $avatarContainer: ThemedStyle<ViewStyle> = ({ colors }) => ({
-  width: 48,
-  height: 48,
-  borderRadius: 35,
-  backgroundColor: "#E94B77", // Pink color from the design
+  width: 64,
+  height: 64,
+  borderRadius: 32, // Half of width & height for a perfect circle
+  backgroundColor: "#E94B77",
   justifyContent: "center",
   alignItems: "center",
   marginBottom: 20,
-  alignContent: "center",
 })
 
 const $avatarText: ThemedStyle<TextStyle> = () => ({
-  fontSize: 28,
+  fontSize: 32,
   fontWeight: "bold",
   color: "white",
+  textAlign: "center", // Ensures horizontal centering
+  textAlignVertical: "center", // Ensures vertical centering on Android
+  includeFontPadding: false, // Fixes extra padding issues in Android
+  paddingTop: 20,
+  paddingLeft: 2,
 })
 
 const $balanceContainer: ThemedStyle<ViewStyle> = () => ({
