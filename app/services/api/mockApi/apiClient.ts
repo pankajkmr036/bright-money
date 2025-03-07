@@ -9,7 +9,7 @@ class MockApiClient {
    * Mock API delay to simulate network requests
    * Adjust this to simulate different network conditions
    */
-  private apiDelay = 1000
+  private apiDelay = 500
 
   /**
    * Mock login API endpoint
