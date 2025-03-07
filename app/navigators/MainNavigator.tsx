@@ -57,21 +57,27 @@ export const MainNavigator = () => {
         name="Dashboard"
         component={DashboardScreen}
         options={{
-          tabBarIcon: ({ color }) => <Icon icon="settings" color={color} />,
+          tabBarIcon: ({ focused }) => (
+            <Icon icon="view" color={focused ? colors.tint : colors.tintInactive} size={30} />
+          ),
         }}
       />
       <Tab.Screen
         name="Transactions"
         component={TransactionScreen}
         options={{
-          tabBarIcon: ({ color }) => <Icon icon="more" color={color} />,
+          tabBarIcon: ({ focused }) => (
+            <Icon icon="more" color={focused ? colors.tint : colors.tintInactive} size={30} />
+          ),
         }}
       />
       <Tab.Screen
         name="Budget"
         component={BudgetScreen}
         options={{
-          tabBarIcon: ({ color }) => <Icon icon="caretRight" color={color} />,
+          tabBarIcon: ({ focused }) => (
+            <Icon icon="lock" color={focused ? colors.tint : colors.tintInactive} size={30} />
+          ),
         }}
       />
     </Tab.Navigator>
