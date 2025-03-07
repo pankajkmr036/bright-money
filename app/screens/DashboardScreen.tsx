@@ -97,14 +97,6 @@ export const DashboardScreen: FC<MainTabScreenProps<"Dashboard">> = () => {
   )
 }
 
-const $headerContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  paddingHorizontal: spacing.md,
-})
-
-const $headerText: ThemedStyle<TextStyle> = () => ({
-  textAlign: "center",
-})
-
 const $drawer: ThemedStyle<ViewStyle> = ({ colors }) => ({
   backgroundColor: colors.background,
   flex: 1,
@@ -155,22 +147,4 @@ const $logoutButton: ThemedStyle<ViewStyle> = ({ colors }) => ({
 
 const $logoutButtonText: ThemedStyle<TextStyle> = () => ({
   fontSize: 16,
-})
-
-const $paginationContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  flexDirection: "row",
-  justifyContent: "center",
-  marginVertical: spacing.lg,
-})
-
-const $paginationDot: ThemedStyle<ViewStyle> = ({ colors, spacing }) => ({
-  width: 8,
-  height: 8,
-  borderRadius: 4,
-  backgroundColor: colors.palette.neutral300,
-  marginHorizontal: spacing.xxs,
-})
-
-const $activeDot: ThemedStyle<ViewStyle> = ({ colors }) => ({
-  backgroundColor: colors.palette.neutral800,
 })
