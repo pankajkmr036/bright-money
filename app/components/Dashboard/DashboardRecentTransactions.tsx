@@ -1,5 +1,5 @@
 import React from "react"
-import { View, ViewStyle, TextStyle, TouchableOpacity } from "react-native"
+import { View, ViewStyle, TextStyle, TouchableOpacity, ActivityIndicator } from "react-native"
 import { Text, ListView } from "@/components"
 import { TransactionItem } from "@/components/Transaction"
 import type { ThemedStyle } from "@/theme"
@@ -11,8 +11,10 @@ export const DashboardRecentTransactions = () => {
   const { themed } = useAppTheme()
   const navigation = useNavigation()
 
+  // Get data from Redux store
+  const { transactions, isLoading } = useAppSelector((state) => state.transactions)
   // Select first 5 transactions from the store
-  const recentTransactions = useAppSelector((state) => state.transactions.transactions.slice(0, 5))
+  const recentTransactions = transactions.slice(0, 5)
 
   const handleViewAllTransactions = () => {
     // Navigate to Transactions screen
@@ -28,11 +30,17 @@ export const DashboardRecentTransactions = () => {
         </TouchableOpacity>
       </View>
 
-      <ListView
-        data={recentTransactions}
-        renderItem={({ item }) => <TransactionItem transaction={item} />}
-        estimatedItemSize={70}
-      />
+      {isLoading ? (
+        <View style={themed($loadingContainer)}>
+          <ActivityIndicator size="large" color={themed($loaderColor).color} />
+        </View>
+      ) : (
+        <ListView
+          data={recentTransactions}
+          renderItem={({ item }) => <TransactionItem transaction={item} />}
+          estimatedItemSize={70}
+        />
+      )}
     </View>
   )
 }
@@ -51,5 +59,15 @@ const $headerContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
 })
 
 const $viewAllText: ThemedStyle<TextStyle> = ({ colors }) => ({
+  color: colors.tint,
+})
+
+const $loadingContainer: ThemedStyle<ViewStyle> = () => ({
+  flex: 1,
+  justifyContent: "center",
+  alignItems: "center",
+})
+
+const $loaderColor: ThemedStyle<{ color: string }> = ({ colors }) => ({
   color: colors.tint,
 })

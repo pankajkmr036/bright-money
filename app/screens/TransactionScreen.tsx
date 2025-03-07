@@ -288,43 +288,6 @@ const $iconColor: ThemedStyle<{ color: string }> = ({ colors }) => ({
   color: colors.text,
 })
 
-const $filterTabsContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  flexDirection: "row",
-  alignItems: "center",
-  gap: spacing.sm, // Use gap for spacing between tabs
-})
-
-const $scrollViewStyle: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  flexDirection: "row",
-  paddingHorizontal: spacing.sm,
-})
-
-const $filterTab: ThemedStyle<ViewStyle> = ({ spacing, colors }) => ({
-  paddingHorizontal: spacing.md,
-  paddingVertical: spacing.xs,
-  borderRadius: 20,
-  borderWidth: 1,
-  borderColor: colors.palette.neutral300,
-  marginRight: spacing.sm,
-  backgroundColor: colors.palette.neutral200,
-})
-
-const $activeFilterTab: ThemedStyle<ViewStyle> = ({ colors }) => ({
-  borderColor: colors.palette.neutral800,
-  backgroundColor: colors.palette.neutral100,
-})
-
-const $filterTabText: ThemedStyle<TextStyle> = ({ colors }) => ({
-  fontSize: 14,
-  color: colors.textDim,
-})
-
-const $activeFilterTabText: ThemedStyle<TextStyle> = ({ colors }) => ({
-  fontSize: 14,
-  color: colors.text,
-  fontWeight: "600",
-})
-
 const $loadingContainer: ThemedStyle<ViewStyle> = () => ({
   flex: 1,
   justifyContent: "center",
