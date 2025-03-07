@@ -1,16 +1,20 @@
 import React, { FC, useCallback, useState } from "react"
-import { View, ViewStyle, TextStyle, Platform } from "react-native"
+import { View, ViewStyle, TextStyle, Platform, ScrollView } from "react-native"
 import { Screen, Text, Button, Icon } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { useSafeAreaInsetsStyle } from "../utils/useSafeAreaInsetsStyle"
 import { $styles, colors, type ThemedStyle } from "@/theme"
 import { MainTabScreenProps } from "@/navigators/MainNavigator"
 import { Drawer } from "react-native-drawer-layout"
-import { DrawerIconButton } from "./DrawerIconButton"
 import { isRTL } from "@/i18n"
 import { useAppDispatch, useAppSelector } from "@/store/store"
 import { logout } from "@/store/auth/authSlice"
-import { DrawerMenuItem } from "./DrawerMenuItem"
+import {
+  DashboardOverviewCards,
+  DashboardRecentTransactions,
+  DrawerIconButton,
+  DrawerMenuItem,
+} from "@/components/Dashboard"
 
 const isAndroid = Platform.OS === "android"
 
@@ -23,11 +27,7 @@ export const DashboardScreen: FC<MainTabScreenProps<"Dashboard">> = () => {
   const [open, setOpen] = useState(false)
 
   const toggleDrawer = useCallback(() => {
-    if (!open) {
-      setOpen(true)
-    } else {
-      setOpen(false)
-    }
+    setOpen((prev) => !prev)
   }, [open])
 
   const handleLogout = () => {
@@ -89,6 +89,11 @@ export const DashboardScreen: FC<MainTabScreenProps<"Dashboard">> = () => {
             <Text preset="heading" text="Dashboard" style={themed($headerText)} />
           </View>
         </View>
+
+        <ScrollView>
+          <DashboardOverviewCards />
+          <DashboardRecentTransactions />
+        </ScrollView>
       </Screen>
     </Drawer>
   )
