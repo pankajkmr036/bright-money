@@ -2,6 +2,14 @@
 
 A comprehensive mobile application for managing personal finances, incorporating budget tracking, expense management, and financial insights.
 
+# Demo
+
+<a href="https://drive.google.com/file/d/1hmUkWSuznR84aLiiFfARUlh_7JVEw08R/preview">
+  <img src="https://img.shields.io/badge/Watch%20Demo-Video-red" alt="Watch Demo Video">
+</a>
+
+Google Drive link: https://drive.google.com/file/d/1hmUkWSuznR84aLiiFfARUlh_7JVEw08R/view?usp=drive_link
+
 ## Overview
 
 This React Native application allows users to:
@@ -52,6 +60,7 @@ app/
 ## Getting Started
 
 ### Prerequisites
+
 - Environment setup: https://reactnative.dev/docs/set-up-your-environment
 - Node.js (>=20.0.0)
 - npm or yarn
@@ -86,6 +95,7 @@ app/
 
    # For Android
    npm run android
+   ```
 
 ## Development
 
