@@ -34,6 +34,7 @@ import {
   TransactionFilterModal,
   AppliedFilters,
 } from "@/components/Transaction"
+import { ScrollView } from "react-native-gesture-handler"
 
 // Helper type for the section data
 interface TransactionSection {
@@ -197,14 +198,6 @@ export const TransactionScreen: FC<MainTabScreenProps<"Transactions">> = () => {
         )}
       </View>
 
-      {/* Bank account info (this is just a placeholder as per the design) */}
-      {!isSearchMode && (
-        <View style={themed($bankInfoContainer)}>
-          <Icon icon="ladybug" size={24} containerStyle={themed($bankIcon)} />
-          <Text text="at 4:00 pm today" style={themed($bankInfoText)} />
-        </View>
-      )}
-
       {/* Applied filters */}
       <AppliedFilters
         filter={filter}
@@ -219,6 +212,9 @@ export const TransactionScreen: FC<MainTabScreenProps<"Transactions">> = () => {
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={themed($filterTabsContainer)}
+          style={
+            themed($scrollViewStyle) // Optional themed additional styling
+          }
         >
           {["NEW TO OLD", "AMOUNT", "TYPE", "MONTH", "CATEGORY"].map((tab) => (
             <TouchableOpacity
@@ -320,25 +316,15 @@ const $iconColor: ThemedStyle<{ color: string }> = ({ colors }) => ({
   color: colors.text,
 })
 
-const $bankInfoContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+const $filterTabsContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flexDirection: "row",
   alignItems: "center",
-  paddingHorizontal: spacing.lg,
-  marginBottom: spacing.sm,
+  gap: spacing.sm, // Use gap for spacing between tabs
 })
 
-const $bankIcon: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  marginRight: spacing.xs,
-})
-
-const $bankInfoText: ThemedStyle<TextStyle> = ({ colors }) => ({
-  color: colors.textDim,
-  fontSize: 14,
-})
-
-const $filterTabsContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  paddingHorizontal: spacing.lg,
-  paddingVertical: spacing.xs,
+const $scrollViewStyle: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  flexDirection: "row",
+  paddingHorizontal: spacing.sm,
 })
 
 const $filterTab: ThemedStyle<ViewStyle> = ({ spacing, colors }) => ({
@@ -399,6 +385,3 @@ const $sectionTitle: ThemedStyle<TextStyle> = ({ colors }) => ({
   fontWeight: "600",
   color: colors.text,
 })
-
-// ScrollView component for horizontal scrolling of filter tabs
-const ScrollView = Platform.OS === "web" ? View : require("react-native").ScrollView
