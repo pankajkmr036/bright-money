@@ -184,7 +184,6 @@ export const TransactionScreen: FC<MainTabScreenProps<"Transactions">> = () => {
         ) : (
           <View style={themed($headerContent)}>
             <View style={themed($titleContainer)}>
-              <Icon icon="back" size={22} containerStyle={themed($backButton)} />
               <Text preset="heading" text="transactions" style={themed($headerText)} />
             </View>
             <TouchableOpacity
@@ -281,10 +280,6 @@ const $headerContent: ThemedStyle<ViewStyle> = () => ({
 const $titleContainer: ThemedStyle<ViewStyle> = () => ({
   flexDirection: "row",
   alignItems: "center",
-})
-
-const $backButton: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  marginRight: spacing.sm,
 })
 
 const $headerText: ThemedStyle<TextStyle> = () => ({
