@@ -63,7 +63,6 @@ const AppStack = () => {
     dispatch(checkAuth())
   }, [dispatch])
 
- 
   if (isLoading) {
     return <ActivityIndicator size="large" color={colors.tint} style={{ flex: 1 }} />
   }

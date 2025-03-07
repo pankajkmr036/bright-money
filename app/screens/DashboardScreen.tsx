@@ -10,10 +10,11 @@ import { isRTL } from "@/i18n"
 import { useAppDispatch, useAppSelector } from "@/store/store"
 import { logout } from "@/store/auth/authSlice"
 import {
-  DashboardOverviewCards,
+  BalanceHeader,
   DashboardRecentTransactions,
   DrawerIconButton,
   DrawerMenuItem,
+  ScrollableCards,
 } from "@/components/Dashboard"
 
 const isAndroid = Platform.OS === "android"
@@ -83,15 +84,12 @@ export const DashboardScreen: FC<MainTabScreenProps<"Dashboard">> = () => {
         style={$styles.flex1}
         {...(isAndroid ? { KeyboardAvoidingViewProps: { behavior: undefined } } : {})}
       >
-        <View>
-          <DrawerIconButton onPress={toggleDrawer} />
-          <View style={[themed($headerContainer)]}>
-            <Text preset="heading" text="Dashboard" style={themed($headerText)} />
-          </View>
-        </View>
+        <DrawerIconButton onPress={toggleDrawer} />
 
         <ScrollView>
-          <DashboardOverviewCards />
+          <BalanceHeader />
+          <ScrollableCards />
+
           <DashboardRecentTransactions />
         </ScrollView>
       </Screen>
@@ -157,4 +155,22 @@ const $logoutButton: ThemedStyle<ViewStyle> = ({ colors }) => ({
 
 const $logoutButtonText: ThemedStyle<TextStyle> = () => ({
   fontSize: 16,
+})
+
+const $paginationContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  flexDirection: "row",
+  justifyContent: "center",
+  marginVertical: spacing.lg,
+})
+
+const $paginationDot: ThemedStyle<ViewStyle> = ({ colors, spacing }) => ({
+  width: 8,
+  height: 8,
+  borderRadius: 4,
+  backgroundColor: colors.palette.neutral300,
+  marginHorizontal: spacing.xxs,
+})
+
+const $activeDot: ThemedStyle<ViewStyle> = ({ colors }) => ({
+  backgroundColor: colors.palette.neutral800,
 })

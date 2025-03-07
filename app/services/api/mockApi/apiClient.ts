@@ -27,7 +27,7 @@ class MockApiClient {
         user: {
           id: "user-123",
           username: credentials.username,
-          name: "Demo User",
+          name: "Pankaj Kumar",
           email: `${credentials.username}@example.com`,
         },
         token: `mock-jwt-token-${Date.now()}`,

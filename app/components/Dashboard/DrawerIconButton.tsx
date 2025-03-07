@@ -98,7 +98,7 @@ const barHeight = 2
 
 const $container: ViewStyle = {
   alignItems: "center",
-  height: 56,
+  height: 32,
   justifyContent: "center",
   width: 56,
 }
