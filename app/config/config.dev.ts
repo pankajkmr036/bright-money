@@ -7,4 +7,5 @@
  */
 export default {
   API_URL: "https://api.rss2json.com/v1/",
+  OPEN_EXCHANGE_RATES_API_KEY: "8aa0cbf52ce8445fb9af01f3d3e6b852",
 }

@@ -7,4 +7,5 @@
  */
 export default {
   API_URL: "CHANGEME",
+  OPEN_EXCHANGE_RATES_API_KEY: "8aa0cbf52ce8445fb9af01f3d3e6b852",
 }
