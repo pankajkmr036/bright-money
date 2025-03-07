@@ -7,6 +7,7 @@ import { DashboardScreen, TransactionScreen, BudgetScreen } from "../screens"
 import type { ThemedStyle } from "@/theme"
 import { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
 import { useAppTheme } from "@/utils/useAppTheme"
+import { useAppInit } from "@/hooks/useAppInit"
 
 export type MainTabParamList = {
   Dashboard: undefined
@@ -40,6 +41,8 @@ export const MainNavigator = () => {
     themed,
     theme: { colors },
   } = useAppTheme()
+
+  useAppInit()
 
   return (
     <Tab.Navigator

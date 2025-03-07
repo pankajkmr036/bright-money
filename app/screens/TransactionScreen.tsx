@@ -7,7 +7,6 @@ import {
   View,
   ViewStyle,
   SectionList,
-  Platform,
 } from "react-native"
 import { Screen, Text, Icon, EmptyState } from "@/components"
 import { MainTabScreenProps } from "@/navigators/MainNavigator"
@@ -18,7 +17,6 @@ import type { ThemedStyle } from "@/theme"
 import { Transaction, FilterTab, TransactionFilter } from "@/types"
 import {
   fetchTransactions,
-  fetchCategories,
   toggleFilterModal,
   setActiveFilterTab,
   toggleSearchMode,
@@ -61,12 +59,6 @@ export const TransactionScreen: FC<MainTabScreenProps<"Transactions">> = () => {
   // Local state
   const [searchQuery, setSearchQuery] = useState("")
   const [refreshing, setRefreshing] = useState(false)
-
-  // Fetch transactions and categories on component mount
-  useEffect(() => {
-    dispatch(fetchTransactions())
-    dispatch(fetchCategories())
-  }, [dispatch])
 
   // Get active filters for the UI
   const activeFilters = useMemo(() => {
