@@ -208,28 +208,13 @@ export const TransactionScreen: FC<MainTabScreenProps<"Transactions">> = () => {
 
       {/* Filter tabs */}
       {!isSearchMode && (
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={themed($filterTabsContainer)}
-          style={
-            themed($scrollViewStyle) // Optional themed additional styling
-          }
-        >
-          {["NEW TO OLD", "AMOUNT", "TYPE", "MONTH", "CATEGORY"].map((tab) => (
-            <TouchableOpacity
-              key={tab}
-              style={[themed($filterTab), tab === "NEW TO OLD" && themed($activeFilterTab)]}
-              onPress={() => handleTabPress(tab as FilterTab)}
-            >
-              {tab === "NEW TO OLD" ? (
-                <Text text={tab} style={themed($activeFilterTabText)} />
-              ) : (
-                <Text text={tab} style={themed($filterTabText)} />
-              )}
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
+        <View>
+          <FilterTabs
+            tabs={["NEW TO OLD", "AMOUNT", "TYPE", "MONTH", "CATEGORY"]}
+            activeTab="NEW TO OLD"
+            onTabPress={handleTabPress}
+          />
+        </View>
       )}
 
       {isLoading && !refreshing ? (

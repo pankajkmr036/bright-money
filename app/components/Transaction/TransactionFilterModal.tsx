@@ -15,6 +15,7 @@ import { Text, Icon } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
 import { SortOption, TransactionCategory, TransactionFilter, FilterTab } from "@/types/transaction"
+import { FilterTabs } from "./FilterTabs"
 
 interface TransactionFilterModalProps {
   visible: boolean
@@ -371,27 +372,12 @@ export const TransactionFilterModal = ({
         </View>
 
         {/* Filter tabs */}
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={themed($tabsContainer)}
-        >
-          {["NEW TO OLD", "AMOUNT", "TYPE", "MONTH", "CATEGORY"].map((tab) => (
-            <TouchableOpacity
-              key={tab}
-              style={[themed($filterTab), selectedTab === tab && themed($activeFilterTab)]}
-              onPress={() => handleTabChange(tab as FilterTab)}
-            >
-              <Text
-                text={tab}
-                style={[
-                  themed($filterTabText),
-                  selectedTab === tab && themed($activeFilterTabText),
-                ]}
-              />
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
+        <FilterTabs
+          tabs={["NEW TO OLD", "AMOUNT", "TYPE", "MONTH", "CATEGORY"]}
+          activeTab={selectedTab}
+          onTabPress={handleTabChange}
+          variant="modal"
+        />
 
         <View style={themed($filterContentContainer)}>{renderFilterContent()}</View>
 
