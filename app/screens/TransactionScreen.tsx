@@ -1,14 +1,18 @@
-import React, { FC } from "react"
-import { View, ViewStyle, TextStyle } from "react-native"
-import { Screen, Text } from "@/components"
+// app/screens/TransactionScreen.tsx
+import React, { FC, useState } from "react"
+import { View, ViewStyle, TextStyle, TouchableOpacity } from "react-native"
+import { Screen, Text, Icon } from "@/components"
+import { MainTabScreenProps } from "@/navigators/MainNavigator"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { useSafeAreaInsetsStyle } from "../utils/useSafeAreaInsetsStyle"
 import type { ThemedStyle } from "@/theme"
-import { MainTabScreenProps } from "@/navigators/MainNavigator"
 
 export const TransactionScreen: FC<MainTabScreenProps<"Transactions">> = () => {
   const { themed } = useAppTheme()
   const $topInset = useSafeAreaInsetsStyle(["top"])
+
+  // State will go here
+
   return (
     <Screen
       preset="scroll"
@@ -18,6 +22,12 @@ export const TransactionScreen: FC<MainTabScreenProps<"Transactions">> = () => {
       <View style={[themed($headerContainer), $topInset]}>
         <Text preset="heading" text="Transactions" style={themed($headerText)} />
       </View>
+
+      {/* Filter tabs will go here */}
+
+      {/* Transaction list will go here */}
+
+      {/* Filter modal will go here */}
     </Screen>
   )
 }
