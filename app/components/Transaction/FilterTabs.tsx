@@ -1,11 +1,10 @@
-// app/components/FilterTabs.tsx
+// app/components/Transaction/FilterTabs.tsx
 import React from "react"
 import { View, TouchableOpacity, ViewStyle, TextStyle } from "react-native"
 import { Text } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
-
-export type FilterTab = "MOST RECENT" | "CATEGORY" | "RANGE"
+import { FilterTab } from "@/types/transaction"
 
 interface FilterTabsProps {
   activeTab: FilterTab
@@ -39,28 +38,29 @@ export const FilterTabs = ({ activeTab, onTabPress }: FilterTabsProps) => {
 // Styles
 const $container: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flexDirection: "row",
-  paddingHorizontal: spacing.md,
+  paddingHorizontal: spacing.lg,
   marginVertical: spacing.sm,
 })
 
-const $tab: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+const $tab: ThemedStyle<ViewStyle> = ({ spacing, colors }) => ({
   paddingVertical: spacing.xs,
   paddingHorizontal: spacing.md,
   borderRadius: 20,
   borderWidth: 1,
-  borderColor: "#E6E6E6",
+  borderColor: colors.palette.neutral300,
   marginRight: spacing.sm,
 })
 
-const $activeTab: ThemedStyle<ViewStyle> = () => ({
-  borderColor: "#000000",
-  backgroundColor: "#FFFFFF",
+const $activeTab: ThemedStyle<ViewStyle> = ({ colors }) => ({
+  borderColor: colors.palette.neutral800,
+  backgroundColor: colors.palette.neutral100,
 })
 
 const $tabText: ThemedStyle<TextStyle> = ({ colors }) => ({
   color: colors.textDim,
 })
 
-const $activeTabText: ThemedStyle<TextStyle> = () => ({
-  color: "#000000",
+const $activeTabText: ThemedStyle<TextStyle> = ({ colors }) => ({
+  color: colors.text,
+  fontWeight: "600",
 })

@@ -1,12 +1,10 @@
-// app/components/TransactionItem.tsx
+// app/components/Transaction/TransactionItem.tsx
 import React from "react"
-import { View, StyleSheet, TouchableOpacity } from "react-native"
-import { Text, Icon } from "@/components"
-import { Transaction } from "@/models/transaction"
-import { formatDate } from "@/utils/formatDate"
+import { View, TouchableOpacity, ViewStyle, TextStyle } from "react-native"
+import { Text } from "@/components"
+import { Transaction, TransactionCategory } from "@/types/transaction"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
-import { ViewStyle, TextStyle } from "react-native"
 
 interface TransactionItemProps {
   transaction: Transaction
@@ -16,96 +14,90 @@ interface TransactionItemProps {
 export const TransactionItem = ({ transaction, onPress }: TransactionItemProps) => {
   const { themed } = useAppTheme()
 
-  // Format the date (e.g., "12 Feb")
-  const displayDate = formatDate(transaction.date, "d MMM")
+  // Format the date (e.g., "02 Mar '25")
+  const dateObj = new Date(transaction.date)
+  const displayDate = `${String(dateObj.getDate()).padStart(2, "0")} ${dateObj.toLocaleString("default", { month: "short" })} '${dateObj.getFullYear().toString().slice(2)}`
 
-  // Determine display amount and color
+  // Determine if transaction is income or expense
   const isIncome = transaction.type === "income"
-  const displayAmount = `${isIncome ? "+₹" : "₹"}${Math.abs(transaction.amount).toFixed(2)}`
+  const displayAmount = isIncome
+    ? `+₹${Math.abs(transaction.amount).toFixed(2)}`
+    : `₹${Math.abs(transaction.amount).toFixed(2)}`
 
-  // Handle foreign currency display
-  const foreignCurrencyInfo =
-    transaction.originalCurrency && transaction.originalAmount
-      ? `${transaction.originalCurrency} ${transaction.originalAmount.toFixed(2)}`
-      : null
+  // Get initials for avatar
+  const getInitials = (name: string) => {
+    const nameParts = name.split(" ")
+    if (nameParts.length >= 2) {
+      return `${nameParts[0][0]}${nameParts[1][0]}`.toUpperCase()
+    }
+    return nameParts[0].slice(0, 2).toUpperCase()
+  }
+
+  // Helper functions for merchant info display
+  const getCategoryIcon = (category: TransactionCategory) => {
+    // Replace with appropriate icons for each category
+    switch (category) {
+      case "medical":
+        return "bell"
+      case "food and drinks":
+        return "menu"
+      case "investment":
+        return "settings"
+      case "banking and finance":
+        return "lock"
+      default:
+        return "settings"
+    }
+  }
 
   const handlePress = () => {
-    if (onPress) {
-      onPress(transaction)
-    }
+    if (onPress) onPress(transaction)
   }
 
   return (
     <TouchableOpacity style={themed($container)} onPress={handlePress} activeOpacity={0.7}>
-      <View style={$iconContainer}>
-        {/* This would be replaced with proper icons based on category */}
-        <Icon
-          icon={getCategoryIcon(transaction.category)}
-          size={24}
-          containerStyle={themed($icon)}
-        />
+      <View style={themed($avatarContainer)}>
+        <Text text={getInitials(transaction.merchantName)} style={themed($avatarText)} />
       </View>
 
       <View style={$contentContainer}>
-        <View style={$mainContent}>
-          <Text weight="medium" size="md" text={transaction.merchantName} />
-          <Text
-            weight="medium"
-            text={displayAmount}
-            style={[isIncome ? themed($positiveAmount) : themed($negativeAmount)]}
-          />
+        <View style={$topRow}>
+          <Text text={transaction.merchantName} style={themed($merchantName)} />
+          <Text text={displayAmount} style={[themed($amount), isIncome && themed($incomeAmount)]} />
         </View>
 
-        <View style={$subContent}>
-          <Text size="xs" text={transaction.category} style={themed($categoryText)} />
-          <Text size="xs" text={displayDate} style={themed($dateText)} />
+        <View style={$bottomRow}>
+          <Text text={transaction.category} style={themed($categoryText)} />
+          <Text text={displayDate} style={themed($dateText)} />
         </View>
-
-        {foreignCurrencyInfo && (
-          <View style={$foreignCurrencyContainer}>
-            <Text size="xs" text={foreignCurrencyInfo} style={themed($foreignCurrencyText)} />
-          </View>
-        )}
       </View>
     </TouchableOpacity>
   )
 }
 
-// Helper function to map category to icon
-const getCategoryIcon = (category: string): "lock" | "bell" | "menu" | "settings" => {
-  // This would be expanded with proper category-to-icon mapping
-  switch (category) {
-    case "medical":
-      return "lock"
-    case "food and drinks":
-      return "bell"
-    case "wallet and digital payment":
-      return "menu"
-    default:
-      return "settings"
-  }
-}
-
 // Styles
-const $container: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+const $container: ThemedStyle<ViewStyle> = ({ spacing, colors }) => ({
   flexDirection: "row",
-  paddingVertical: spacing.sm,
+  paddingVertical: spacing.md,
   borderBottomWidth: 1,
-  borderBottomColor: "#E6E6E6",
+  borderBottomColor: colors.palette.neutral300,
+  paddingHorizontal: spacing.lg,
 })
 
-const $iconContainer: ViewStyle = {
-  marginRight: 12,
-}
-
-const $icon: ThemedStyle<ViewStyle> = ({ colors, spacing }) => ({
-  width: 40,
-  height: 40,
-  borderRadius: 20,
-  backgroundColor: colors.palette.neutral300,
+const $avatarContainer: ThemedStyle<ViewStyle> = ({ colors }) => ({
+  width: 48,
+  height: 48,
+  borderRadius: 24,
+  backgroundColor: colors.palette.neutral200,
   justifyContent: "center",
   alignItems: "center",
-  marginTop: spacing.xs,
+  marginRight: 16,
+})
+
+const $avatarText: ThemedStyle<TextStyle> = ({ colors }) => ({
+  fontSize: 18,
+  fontWeight: "bold",
+  color: colors.text,
 })
 
 const $contentContainer: ViewStyle = {
@@ -113,39 +105,40 @@ const $contentContainer: ViewStyle = {
   justifyContent: "center",
 }
 
-const $mainContent: ViewStyle = {
+const $topRow: ViewStyle = {
   flexDirection: "row",
   justifyContent: "space-between",
   alignItems: "center",
-  marginBottom: 4,
+  marginBottom: 6,
 }
 
-const $subContent: ViewStyle = {
+const $bottomRow: ViewStyle = {
   flexDirection: "row",
   justifyContent: "space-between",
+  alignItems: "center",
 }
 
-const $foreignCurrencyContainer: ViewStyle = {
-  marginTop: 4,
-}
-
-const $positiveAmount: ThemedStyle<TextStyle> = () => ({
-  color: "#00C928", // Green color
+const $merchantName: ThemedStyle<TextStyle> = ({ typography }) => ({
+  fontSize: 16,
+  fontWeight: "500",
+  fontFamily: typography.primary.medium,
 })
 
-const $negativeAmount: ThemedStyle<TextStyle> = () => ({
-  color: "#000000", // Default text color
+const $amount: ThemedStyle<TextStyle> = () => ({
+  fontSize: 16,
+  fontWeight: "500",
+})
+
+const $incomeAmount: ThemedStyle<TextStyle> = () => ({
+  color: "#00C928", // Green color for income
 })
 
 const $categoryText: ThemedStyle<TextStyle> = ({ colors }) => ({
+  fontSize: 14,
   color: colors.textDim,
 })
 
 const $dateText: ThemedStyle<TextStyle> = ({ colors }) => ({
+  fontSize: 14,
   color: colors.textDim,
-})
-
-const $foreignCurrencyText: ThemedStyle<TextStyle> = ({ colors }) => ({
-  color: colors.textDim,
-  fontStyle: "italic",
 })

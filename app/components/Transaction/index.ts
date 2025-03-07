@@ -1,3 +1,4 @@
+// app/components/Transaction/index.ts
 export * from "./EmptyTransactionState"
 export * from "./FilterTabs"
 export * from "./SearchBar"

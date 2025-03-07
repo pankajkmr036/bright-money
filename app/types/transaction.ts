@@ -51,6 +51,8 @@ export type TransactionCategory =
 
 export type SortOption = "new to old" | "old to new" | "high to low" | "low to high"
 
+export type FilterTab = "MOST RECENT" | "CATEGORY" | "RANGE" | "TYPE" | "MONTH"
+
 export interface TransactionFilter {
   sort: SortOption
   categories: TransactionCategory[]

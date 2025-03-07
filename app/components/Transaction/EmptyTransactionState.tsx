@@ -1,6 +1,6 @@
-// app/components/EmptyTransactionState.tsx
+// app/components/Transaction/EmptyTransactionState.tsx
 import React from "react"
-import { View, ViewStyle, TextStyle, Image } from "react-native"
+import { View, ViewStyle, TextStyle, Image, ImageStyle } from "react-native"
 import { Text } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
@@ -18,7 +18,7 @@ export const EmptyTransactionState = ({
 
   return (
     <View style={themed($container)}>
-      <Image source={require("../../../assets/icons/more.png")} style={$image} />
+      <Image source={require("../../../assets/icons/x.png")} style={themed($image)} />
       <Text text={message} style={themed($text)} />
     </View>
   )
@@ -32,14 +32,16 @@ const $container: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   paddingVertical: spacing.xxl,
 })
 
-const $image: ViewStyle = {
-  width: 80,
-  height: 80,
+const $image: ThemedStyle<ImageStyle> = ({ spacing }) => ({
+  width: 60,
+  height: 60,
   marginBottom: 20,
-}
+})
 
 const $text: ThemedStyle<TextStyle> = ({ colors, spacing }) => ({
-  color: colors.textDim,
+  color: colors.text,
+  fontSize: 18,
+  fontWeight: "500",
   textAlign: "center",
   marginTop: spacing.sm,
 })

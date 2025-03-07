@@ -1,6 +1,6 @@
 // app/store/transactions/transactionsSlice.ts
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
-import { Transaction, TransactionFilter, TransactionType, TransactionCategory } from "@/types"
+import { Transaction, TransactionFilter, TransactionCategory, FilterTab } from "@/types"
 import { transactionApiService } from "@/services/api/mockApi/transactionsService"
 
 interface TransactionsState {
@@ -9,7 +9,8 @@ interface TransactionsState {
   categories: TransactionCategory[]
   filter: TransactionFilter
   isFilterModalVisible: boolean
-  isSearchModalVisible: boolean
+  isSearchMode: boolean
+  activeFilterTab: FilterTab
   isLoading: boolean
   isSearching: boolean
   error: string | null
@@ -31,7 +32,8 @@ const initialState: TransactionsState = {
   categories: [],
   filter: initialFilter,
   isFilterModalVisible: false,
-  isSearchModalVisible: false,
+  isSearchMode: false,
+  activeFilterTab: "MOST RECENT",
   isLoading: false,
   isSearching: false,
   error: null,
@@ -107,10 +109,14 @@ const transactionsSlice = createSlice({
         action.payload !== undefined ? action.payload : !state.isFilterModalVisible
     },
 
-    // Toggle search modal visibility
-    toggleSearchModal(state, action: PayloadAction<boolean | undefined>) {
-      state.isSearchModalVisible =
-        action.payload !== undefined ? action.payload : !state.isSearchModalVisible
+    // Set active filter tab
+    setActiveFilterTab(state, action: PayloadAction<FilterTab>) {
+      state.activeFilterTab = action.payload
+    },
+
+    // Toggle search mode
+    toggleSearchMode(state, action: PayloadAction<boolean>) {
+      state.isSearchMode = action.payload
     },
 
     // Update filter in state without API call
@@ -180,7 +186,12 @@ const transactionsSlice = createSlice({
   },
 })
 
-export const { toggleFilterModal, toggleSearchModal, updateFilter, resetFilters } =
-  transactionsSlice.actions
+export const {
+  toggleFilterModal,
+  setActiveFilterTab,
+  toggleSearchMode,
+  updateFilter,
+  resetFilters,
+} = transactionsSlice.actions
 
 export default transactionsSlice.reducer

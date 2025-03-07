@@ -1,5 +1,7 @@
+// app/components/Transaction/SearchBar.tsx
+import React from "react"
 import { View, TextInput, TouchableOpacity, ViewStyle, TextStyle } from "react-native"
-import { Icon } from "@/components"
+import { Icon, Text } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
 
@@ -17,7 +19,7 @@ export const SearchBar = ({
   onChangeText,
   onSubmitEditing,
   onCancel,
-  placeholder = "Search...",
+  placeholder = "Search transactions...",
   autoFocus = true,
 }: SearchBarProps) => {
   const { themed } = useAppTheme()
@@ -45,37 +47,25 @@ export const SearchBar = ({
 
       {onCancel && (
         <TouchableOpacity onPress={onCancel} style={themed($cancelButton)}>
-          <Text text="Cancel" style={themed($cancelText)} />
+          <Text style={themed($cancelText)} text="cancel" />
         </TouchableOpacity>
       )}
     </View>
   )
 }
 
-const Text = ({ text, style }: { text: string; style?: StyleProp<TextStyle> }) => {
-  const { themed } = useAppTheme()
-  return <Text style={[themed($defaultText), style]} text={text} />
-}
-
-const $defaultText: ThemedStyle<TextStyle> = ({ colors, typography }) => ({
-  color: colors.text,
-  fontFamily: typography.primary.normal,
-  fontSize: 16,
-})
-
 // Styles
 const $container: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flexDirection: "row",
   alignItems: "center",
   padding: spacing.sm,
-  backgroundColor: "#F5F5F5",
 })
 
-const $searchContainer: ThemedStyle<ViewStyle> = () => ({
+const $searchContainer: ThemedStyle<ViewStyle> = ({ colors }) => ({
   flex: 1,
   flexDirection: "row",
   alignItems: "center",
-  backgroundColor: "#FFFFFF",
+  backgroundColor: colors.palette.neutral200,
   borderRadius: 8,
   paddingHorizontal: 10,
 })
