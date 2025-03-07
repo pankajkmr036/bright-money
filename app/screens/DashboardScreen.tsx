@@ -80,12 +80,12 @@ export const DashboardScreen: FC<MainTabScreenProps<"Dashboard">> = () => {
       <Screen
         preset="fixed"
         safeAreaEdges={["top"]}
-        contentContainerStyle={$styles.flex1}
+        style={$styles.flex1}
         {...(isAndroid ? { KeyboardAvoidingViewProps: { behavior: undefined } } : {})}
       >
-        <View style={$styles.flex1}>
+        <View>
           <DrawerIconButton onPress={toggleDrawer} />
-          <View style={[themed($headerContainer), $topInset]}>
+          <View style={[themed($headerContainer)]}>
             <Text preset="heading" text="Dashboard" style={themed($headerText)} />
           </View>
         </View>
@@ -96,7 +96,6 @@ export const DashboardScreen: FC<MainTabScreenProps<"Dashboard">> = () => {
 
 const $headerContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   paddingHorizontal: spacing.md,
-  paddingVertical: spacing.md,
 })
 
 const $headerText: ThemedStyle<TextStyle> = () => ({
