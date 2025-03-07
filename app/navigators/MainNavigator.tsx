@@ -58,7 +58,7 @@ export const MainNavigator = () => {
         component={DashboardScreen}
         options={{
           tabBarIcon: ({ focused }) => (
-            <Icon icon="view" color={focused ? colors.tint : colors.tintInactive} size={30} />
+            <Icon icon="view" color={focused ? colors.tint : colors.palette.neutral400} size={30} />
           ),
         }}
       />
@@ -67,7 +67,7 @@ export const MainNavigator = () => {
         component={TransactionScreen}
         options={{
           tabBarIcon: ({ focused }) => (
-            <Icon icon="more" color={focused ? colors.tint : colors.tintInactive} size={30} />
+            <Icon icon="more" color={focused ? colors.tint : colors.palette.neutral400} size={30} />
           ),
         }}
       />
@@ -76,7 +76,7 @@ export const MainNavigator = () => {
         component={BudgetScreen}
         options={{
           tabBarIcon: ({ focused }) => (
-            <Icon icon="lock" color={focused ? colors.tint : colors.tintInactive} size={30} />
+            <Icon icon="lock" color={focused ? colors.tint : colors.palette.neutral400} size={30} />
           ),
         }}
       />
