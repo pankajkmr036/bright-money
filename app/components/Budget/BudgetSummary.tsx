@@ -1,7 +1,7 @@
 // app/components/Budget/BudgetSummary.tsx
 import React, { useMemo } from "react"
 import { View, ViewStyle, TextStyle } from "react-native"
-import { Text } from "@/components"
+import { ProgressBar, Text } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
 import { Budget } from "@/services/api/mockApi/budgetService"
@@ -59,17 +59,7 @@ export const BudgetSummary = ({ budgets }: BudgetSummaryProps) => {
           <Text text={`${Math.round(summary.percentUsed)}%`} style={themed($percentageText)} />
         </View>
 
-        <View style={themed($progressBar)}>
-          <View
-            style={[
-              themed($progressFill),
-              {
-                width: `${summary.percentUsed}%`,
-                backgroundColor: summary.percentUsed > 85 ? "#FFC107" : "#00C928",
-              },
-            ]}
-          />
-        </View>
+        <ProgressBar progress={summary.percentUsed} height={8} />
       </View>
     </View>
   )
@@ -131,16 +121,4 @@ const $progressLabel: ThemedStyle<TextStyle> = () => ({
 const $percentageText: ThemedStyle<TextStyle> = () => ({
   fontSize: 16,
   fontWeight: "500",
-})
-
-const $progressBar: ThemedStyle<ViewStyle> = ({ colors }) => ({
-  height: 8,
-  backgroundColor: colors.palette.neutral300,
-  borderRadius: 4,
-  overflow: "hidden",
-})
-
-const $progressFill: ThemedStyle<ViewStyle> = () => ({
-  height: "100%",
-  borderRadius: 4,
 })
