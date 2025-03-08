@@ -7,7 +7,7 @@ import {
   TransactionCategory,
   FilterTab,
 } from "@/types"
-import { transactionApiService } from "@/services/api/mockApi/transactionsService"
+import { transactionApiService } from "@/services/api/mockApi"
 
 interface TransactionsState {
   transactions: Transaction[]
