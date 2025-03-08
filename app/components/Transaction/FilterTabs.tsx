@@ -58,15 +58,15 @@ export const FilterTabs = ({
 const $container: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flexDirection: "row",
   paddingHorizontal: spacing.lg,
-  marginVertical: spacing.sm,
+  height: 60,
   alignItems: "center",
-  gap: spacing.sm, // Space between tabs
+  gap: spacing.sm,
 })
 
 const $modalContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   paddingHorizontal: 0,
   marginVertical: spacing.sm,
-  gap: spacing.xs, // Smaller gap for modal
+  gap: spacing.xs,
 })
 
 const $tab: ThemedStyle<ViewStyle> = ({ spacing, colors }) => ({
