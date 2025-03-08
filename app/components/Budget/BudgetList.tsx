@@ -1,6 +1,6 @@
 // app/components/Budget/BudgetList.tsx - updated version
 import React from "react"
-import { View, ViewStyle, TextStyle, TouchableOpacity, ScrollView } from "react-native"
+import { View, ViewStyle, TextStyle, TouchableOpacity } from "react-native"
 import { Text } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
@@ -37,39 +37,36 @@ export const BudgetList = ({ budgets }: BudgetListProps) => {
     <View style={themed($container)}>
       <Text text="Your Budgets" style={themed($sectionTitle)} />
 
-      {/* Make the budget items scrollable */}
-      <ScrollView style={themed($scrollView)} showsVerticalScrollIndicator={true}>
-        {budgets.map((budget) => (
-          <TouchableOpacity
-            key={budget.id}
-            style={themed($budgetItem)}
-            onPress={() => handleEditBudget(budget)}
-            activeOpacity={0.7}
-          >
-            <View style={themed($budgetHeader)}>
-              <Text text={budget.category} style={themed($categoryName)} numberOfLines={1} />
-              <Text style={themed($budgetAmount)}>
-                ₹{budget.spent.toLocaleString()} / ₹{budget.allocated.toLocaleString()}
-              </Text>
-            </View>
+      {budgets.map((budget) => (
+        <TouchableOpacity
+          key={budget.id}
+          style={themed($budgetItem)}
+          onPress={() => handleEditBudget(budget)}
+          activeOpacity={0.7}
+        >
+          <View style={themed($budgetHeader)}>
+            <Text text={budget.category} style={themed($categoryName)} numberOfLines={1} />
+            <Text style={themed($budgetAmount)}>
+              ₹{budget.spent.toLocaleString()} / ₹{budget.allocated.toLocaleString()}
+            </Text>
+          </View>
 
-            <BudgetProgressBar allocated={budget.allocated} spent={budget.spent} />
+          <BudgetProgressBar allocated={budget.allocated} spent={budget.spent} />
 
-            <View style={themed($statusContainer)}>
-              <Text
-                text={`${Math.min(Math.round((budget.spent / budget.allocated) * 100), 100)}% used`}
-                style={themed($statusText)}
-              />
-              <Text
-                text={`₹${Math.max(budget.allocated - budget.spent, 0).toLocaleString()} remaining`}
-                style={themed($remainingText)}
-              />
-            </View>
-          </TouchableOpacity>
-        ))}
-        {/* Add padding at bottom to ensure fab button doesn't cover last item */}
-        <View style={themed($bottomPadding)} />
-      </ScrollView>
+          <View style={themed($statusContainer)}>
+            <Text
+              text={`${Math.min(Math.round((budget.spent / budget.allocated) * 100), 100)}% used`}
+              style={themed($statusText)}
+            />
+            <Text
+              text={`₹${Math.max(budget.allocated - budget.spent, 0).toLocaleString()} remaining`}
+              style={themed($remainingText)}
+            />
+          </View>
+        </TouchableOpacity>
+      ))}
+      {/* Add padding at bottom to ensure fab button doesn't cover last item */}
+      <View style={themed($bottomPadding)} />
     </View>
   )
 }
@@ -78,11 +75,6 @@ export const BudgetList = ({ budgets }: BudgetListProps) => {
 const $container: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   paddingHorizontal: spacing.lg,
   paddingTop: spacing.md,
-  flex: 1, // Take up all available space
-})
-
-// New style for scrollable area
-const $scrollView: ThemedStyle<ViewStyle> = () => ({
   flex: 1, // Take up all available space
 })
 

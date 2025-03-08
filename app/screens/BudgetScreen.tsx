@@ -64,23 +64,25 @@ export const BudgetScreen: FC<MainTabScreenProps<"Budget">> = () => {
         <Text preset="heading" text="Budgets" style={themed($headerText)} />
       </View>
 
-      {/* Month Selector */}
-      <MonthSelector currentMonth={currentMonth} onMonthChange={handleMonthChange} />
+      <ScrollView style={themed($scrollView)} showsVerticalScrollIndicator={true}>
+        {/* Month Selector */}
+        <MonthSelector currentMonth={currentMonth} onMonthChange={handleMonthChange} />
 
-      {/* Budget List (Scrollable) */}
-      <View style={themed($budgetListContainer)}>
-        {isLoading ? (
-          <View style={themed($loadingContainer)}>
-            <ActivityIndicator size="large" color={themed($loaderColor).color} />
-          </View>
-        ) : (
-          <>
-            {/* Budget Summary */}
-            <BudgetSummary budgets={budgets} />
-            <BudgetList budgets={budgets} />
-          </>
-        )}
-      </View>
+        {/* Budget List (Scrollable) */}
+        <View style={themed($budgetListContainer)}>
+          {isLoading ? (
+            <View style={themed($loadingContainer)}>
+              <ActivityIndicator size="large" color={themed($loaderColor).color} />
+            </View>
+          ) : (
+            <>
+              {/* Budget Summary */}
+              <BudgetSummary budgets={budgets} />
+              <BudgetList budgets={budgets} />
+            </>
+          )}
+        </View>
+      </ScrollView>
 
       {/* Floating Action Button to add new budget */}
       <TouchableOpacity style={themed($fabButton)} onPress={openAddBudget} activeOpacity={0.8}>
@@ -95,6 +97,11 @@ export const BudgetScreen: FC<MainTabScreenProps<"Budget">> = () => {
 
 // Styles - updated
 const $screenContentContainer: ThemedStyle<ViewStyle> = () => ({
+  flex: 1,
+})
+
+// New style for scrollable area
+const $scrollView: ThemedStyle<ViewStyle> = () => ({
   flex: 1,
 })
 
