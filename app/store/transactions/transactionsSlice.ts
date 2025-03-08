@@ -3,7 +3,6 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
 import {
   Transaction,
   TransactionFilter,
-  TransactionType,
   TransactionCategory,
   FilterTab,
 } from "@/types"
