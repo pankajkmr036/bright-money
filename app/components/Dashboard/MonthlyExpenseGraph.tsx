@@ -5,6 +5,7 @@ import { LineChart } from "react-native-chart-kit"
 import { Text } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
+import { CardHeader, ContentCard } from "../AdvancedCard"
 
 // Mock data for monthly expenses (in a real app, this would come from the store)
 const MONTHLY_DATA = [
@@ -16,9 +17,10 @@ const MONTHLY_DATA = [
   { month: "Feb", amount: 59760 },
 ]
 
+const screenWidth = Dimensions.get("window").width
+
 export const MonthlyExpenseGraph = () => {
   const { themed } = useAppTheme()
-  const screenWidth = Dimensions.get("window").width - 40 // Account for padding
 
   // Prepare data for the chart
   const chartData = useMemo(() => {
@@ -53,15 +55,12 @@ export const MonthlyExpenseGraph = () => {
   }
 
   return (
-    <View style={themed($container)}>
-      <View style={themed($headerContainer)}>
-        <Text preset="subheading" text="Monthly Expenses" />
-        <Text text="Last 6 Months" style={themed($subtitle)} />
-      </View>
+    <ContentCard>
+      <CardHeader title="Monthly Expenses" subtitle="Last 6 Months" />
 
       <LineChart
         data={chartData}
-        width={screenWidth}
+        width={screenWidth - 80}
         height={220}
         chartConfig={chartConfig}
         bezier
@@ -80,28 +79,11 @@ export const MonthlyExpenseGraph = () => {
           <Text text="Monthly spending (K)" style={themed($legendText)} />
         </View>
       </View>
-    </View>
+    </ContentCard>
   )
 }
 
 // Styles
-const $container: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  padding: spacing.lg,
-  backgroundColor: "white",
-  borderRadius: 12,
-  marginHorizontal: spacing.md,
-  marginTop: spacing.lg,
-})
-
-const $headerContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  marginBottom: spacing.md,
-})
-
-const $subtitle: ThemedStyle<TextStyle> = ({ colors }) => ({
-  color: colors.textDim,
-  fontSize: 14,
-})
-
 const $chart: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   marginVertical: spacing.md,
   borderRadius: 16,

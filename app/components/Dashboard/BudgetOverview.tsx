@@ -1,10 +1,12 @@
 // app/components/Dashboard/BudgetOverview.tsx
 import React from "react"
-import { View, ViewStyle, TextStyle, TouchableOpacity } from "react-native"
+import { View, ViewStyle, TextStyle } from "react-native"
 import { Text } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
 import { useNavigation } from "@react-navigation/native"
+import { CardHeader, ContentCard } from "@/components/AdvancedCard"
+import { LinkButton } from "../Buttons"
 
 // Mock budget data - in a real app, this would come from Redux
 const BUDGET_DATA = [
@@ -44,9 +46,8 @@ export const BudgetOverview = () => {
   }
 
   return (
-    <View style={themed($container)}>
-      <Text preset="subheading" text="Budget Overview" style={themed($title)} />
-      <Text style={themed($subtitle)}>This Month's Spending</Text>
+    <ContentCard>
+      <CardHeader title="Budget Overview" subtitle="This Month's Spending" />
 
       {/* Budget progress bars */}
       <View style={themed($budgetList)}>
@@ -94,36 +95,10 @@ export const BudgetOverview = () => {
         })}
       </View>
 
-      {/* View all budgets button */}
-      <TouchableOpacity
-        style={themed($viewAllButton)}
-        onPress={handleViewAllBudgets}
-        activeOpacity={0.7}
-      >
-        <Text style={themed($viewAllText)}>View all budgets</Text>
-      </TouchableOpacity>
-    </View>
+      <LinkButton text="View all budgets" onPress={handleViewAllBudgets} />
+    </ContentCard>
   )
 }
-
-// Styles
-const $container: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  padding: spacing.lg,
-  backgroundColor: "white",
-  borderRadius: 12,
-  marginHorizontal: spacing.md,
-  marginTop: spacing.lg,
-})
-
-const $title: ThemedStyle<TextStyle> = () => ({
-  marginBottom: 4,
-})
-
-const $subtitle: ThemedStyle<TextStyle> = ({ colors }) => ({
-  fontSize: 14,
-  color: colors.textDim,
-  marginBottom: 16,
-})
 
 const $budgetList: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   marginTop: spacing.md,
@@ -183,17 +158,4 @@ const $statusIndicator: ThemedStyle<ViewStyle> = () => ({
 const $statusText: ThemedStyle<TextStyle> = ({ colors }) => ({
   fontSize: 12,
   color: colors.textDim,
-})
-
-const $viewAllButton: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  alignItems: "center",
-  justifyContent: "center",
-  marginTop: spacing.md,
-  paddingVertical: spacing.sm,
-})
-
-const $viewAllText: ThemedStyle<TextStyle> = ({ colors }) => ({
-  color: colors.tint,
-  fontSize: 16,
-  fontWeight: "500",
 })

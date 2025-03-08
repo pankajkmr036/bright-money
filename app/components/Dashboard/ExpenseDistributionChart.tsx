@@ -1,10 +1,12 @@
 // app/components/Dashboard/ExpenseDistributionChart.tsx
 import React, { useState } from "react"
-import { View, ViewStyle, TextStyle, TouchableOpacity, Dimensions } from "react-native"
+import { View, ViewStyle, TextStyle, Dimensions } from "react-native"
 import { PieChart } from "react-native-chart-kit"
 import { Text } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
+import { CardHeader, ContentCard } from "../AdvancedCard"
+import { LinkButton } from "../Buttons"
 
 // Chart data
 const expenseData = [
@@ -24,7 +26,7 @@ const screenWidth = Dimensions.get("window").width
 
 export const ExpenseDistributionChart = () => {
   const { themed } = useAppTheme()
-  const [expanded, setExpanded] = useState(true)
+  const [expanded, setExpanded] = useState(false)
 
   // Calculate total expense
   const totalExpense = expenseData.reduce((sum, item) => sum + item.amount, 0)
@@ -64,18 +66,14 @@ export const ExpenseDistributionChart = () => {
   }
 
   return (
-    <View style={themed($container)}>
-      <Text style={themed($title)}>TOP SPENDS CATEGORY</Text>
+    <ContentCard>
+      <CardHeader title="Top Spends Category" />
 
       <Text style={themed($mainCategory)}>
         {expenseData[0].percentage}% on {expenseData[0].name}
       </Text>
 
-      <Text style={themed($description)}>
-        covering all bases! Your card handles those miscellaneous expenses with ease and flexibility
-      </Text>
-
-      {/* Centered pie chart */}
+      {/*  pie chart */}
       <View style={themed($chartContainer)}>
         <PieChart
           data={chartData}
@@ -118,42 +116,16 @@ export const ExpenseDistributionChart = () => {
         ))}
       </View>
 
-      <TouchableOpacity onPress={toggleExpand} style={themed($viewMoreButton)}>
-        <Text style={themed($viewMoreText)}>{expanded ? "View less" : "View more"}</Text>
-      </TouchableOpacity>
-    </View>
+      <LinkButton text={expanded ? "View less" : "View more"} onPress={toggleExpand} />
+    </ContentCard>
   )
 }
-
-// Styles
-const $container: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  padding: spacing.lg,
-  backgroundColor: "white",
-  borderRadius: 12,
-  marginHorizontal: spacing.md,
-  marginTop: spacing.lg,
-})
-
-const $title: ThemedStyle<TextStyle> = ({ colors }) => ({
-  fontSize: 14,
-  color: colors.textDim,
-  marginBottom: 8,
-  textTransform: "uppercase",
-  letterSpacing: 0.5,
-})
 
 const $mainCategory: ThemedStyle<TextStyle> = () => ({
   fontSize: 28,
   fontWeight: "bold",
   marginBottom: 8,
   lineHeight: 28,
-})
-
-const $description: ThemedStyle<TextStyle> = ({ colors }) => ({
-  fontSize: 16,
-  color: colors.textDim,
-  marginBottom: 20,
-  lineHeight: 22,
 })
 
 const $chartContainer: ThemedStyle<ViewStyle> = () => ({
@@ -223,17 +195,4 @@ const $categoryAmount: ThemedStyle<TextStyle> = () => ({
 const $categoryPercentage: ThemedStyle<TextStyle> = ({ colors }) => ({
   fontSize: 14,
   color: colors.textDim,
-})
-
-const $viewMoreButton: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  alignItems: "center",
-  paddingVertical: spacing.md,
-  marginTop: spacing.sm,
-})
-
-const $viewMoreText: ThemedStyle<TextStyle> = ({ colors }) => ({
-  fontSize: 16,
-  color: colors.tint,
-  fontWeight: "500",
-  textDecorationLine: "underline",
 })
