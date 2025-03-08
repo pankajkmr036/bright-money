@@ -44,8 +44,14 @@ export const BudgetScreen: FC<MainTabScreenProps<"Budget">> = () => {
   }
 
   // Open add budget modal
-  const handleAddBudget = () => {
+  const openAddBudget = () => {
     dispatch(toggleAddEditModal(true))
+  }
+
+  // Clode add budget modal
+
+  const closeAddBudget = () => {
+    dispatch(toggleAddEditModal(false))
   }
 
   return (
@@ -77,15 +83,12 @@ export const BudgetScreen: FC<MainTabScreenProps<"Budget">> = () => {
       </View>
 
       {/* Floating Action Button to add new budget */}
-      <TouchableOpacity style={themed($fabButton)} onPress={handleAddBudget} activeOpacity={0.8}>
+      <TouchableOpacity style={themed($fabButton)} onPress={openAddBudget} activeOpacity={0.8}>
         <Icon icon="add" size={24} color="white" />
       </TouchableOpacity>
 
       {/* Add/Edit Budget Modal */}
-      <AddEditBudgetModal
-        visible={isAddEditModalVisible}
-        onClose={() => dispatch(toggleAddEditModal(false))}
-      />
+      <AddEditBudgetModal visible={isAddEditModalVisible} onClose={closeAddBudget} />
     </Screen>
   )
 }
