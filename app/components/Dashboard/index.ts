@@ -6,5 +6,6 @@ export * from "./ExpenseInsights"
 export * from "./ScrollableCards"
 export * from "./ExpenseDistributionChart"
 export * from  "./MonthlyExpenseGraph"
+export * from "./BudgetOverview"
 
 

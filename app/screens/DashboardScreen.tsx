@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from "@/store/store"
 import { logout } from "@/store/auth/authSlice"
 import {
   BalanceHeader,
+  BudgetOverview,
   DashboardRecentTransactions,
   DrawerIconButton,
   DrawerMenuItem,
@@ -91,6 +92,7 @@ export const DashboardScreen: FC<MainTabScreenProps<"Dashboard">> = () => {
         <ScrollView>
           <BalanceHeader />
           <ScrollableCards />
+          <BudgetOverview />
           <ExpenseDistributionChart />
           <MonthlyExpenseGraph />
           <DashboardRecentTransactions />
