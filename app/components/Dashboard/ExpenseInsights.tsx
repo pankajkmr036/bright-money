@@ -1,23 +1,23 @@
-// Updated BudgetOverviewCard.tsx
+// Updated ExpenseInsights.tsx
 import React from "react"
 import { View, ViewStyle, TextStyle, TouchableOpacity } from "react-native"
 import { Text } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
 
-interface BudgetOverviewCardProps {
+interface ExpenseInsightsProps {
   currentMonth: string
   currentSpend: string
   compareAmount: string
   prevMonth: string
 }
 
-export const BudgetOverviewCard = ({
+export const ExpenseInsights = ({
   currentMonth = "FEB'25",
   currentSpend = "59.76K",
   compareAmount = "40.97K",
   prevMonth = "Jan'25",
-}: BudgetOverviewCardProps) => {
+}: ExpenseInsightsProps) => {
   const { themed } = useAppTheme()
 
   return (

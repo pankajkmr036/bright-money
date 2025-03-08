@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react"
 import { View, ViewStyle, FlatList, Animated, Dimensions } from "react-native"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
-import { BudgetOverviewCard } from "./BudgetOverviewCard"
+import { ExpenseInsights } from "./ExpenseInsights"
 
 interface CardData {
   id: string
@@ -71,7 +71,7 @@ export const ScrollableCards = () => {
         contentContainerStyle={themed($listContainer)}
         renderItem={({ item }) => (
           <View style={{ width: width - 40 }}>
-            <BudgetOverviewCard
+            <ExpenseInsights
               currentMonth={item.currentMonth}
               currentSpend={item.amount}
               compareAmount={item.compareAmount}
