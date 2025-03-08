@@ -15,6 +15,7 @@ import {
   DrawerIconButton,
   DrawerMenuItem,
   ExpenseDistributionChart,
+  MonthlyExpenseGraph,
   ScrollableCards,
 } from "@/components/Dashboard"
 
@@ -91,6 +92,7 @@ export const DashboardScreen: FC<MainTabScreenProps<"Dashboard">> = () => {
           <BalanceHeader />
           <ScrollableCards />
           <ExpenseDistributionChart />
+          <MonthlyExpenseGraph />
           <DashboardRecentTransactions />
         </ScrollView>
       </Screen>

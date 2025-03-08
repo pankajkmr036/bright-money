@@ -5,5 +5,6 @@ export * from "./DashboardRecentTransactions"
 export * from "./BudgetOverviewCard"
 export * from "./ScrollableCards"
 export * from "./ExpenseDistributionChart"
+export * from  "./MonthlyExpenseGraph"
 
 
