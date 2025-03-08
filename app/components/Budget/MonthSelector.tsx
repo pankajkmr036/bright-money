@@ -1,4 +1,4 @@
-// app/components/Budget/MonthSelector.tsx
+// app/components/Budget/MonthSelector.tsx - updated
 import React from "react"
 import { View, ViewStyle, TextStyle, TouchableOpacity } from "react-native"
 import { Text, Icon } from "@/components"
@@ -33,7 +33,7 @@ export const MonthSelector = ({ currentMonth, onMonthChange }: MonthSelectorProp
   ]
   const displayMonth = `${monthNames[month - 1]} ${year}`
 
-  // Navigate to previous month
+  // Navigation handlers
   const handlePrevMonth = () => {
     let newMonth = month - 1
     let newYear = year
@@ -46,7 +46,6 @@ export const MonthSelector = ({ currentMonth, onMonthChange }: MonthSelectorProp
     onMonthChange(`${newYear}-${String(newMonth).padStart(2, "0")}`)
   }
 
-  // Navigate to next month
   const handleNextMonth = () => {
     let newMonth = month + 1
     let newYear = year
@@ -61,34 +60,48 @@ export const MonthSelector = ({ currentMonth, onMonthChange }: MonthSelectorProp
 
   return (
     <View style={themed($container)}>
-      <TouchableOpacity onPress={handlePrevMonth} style={themed($arrowButton)}>
-        <Icon icon="caretLeft" size={20} />
-      </TouchableOpacity>
+      <View style={themed($controlsContainer)}>
+        <TouchableOpacity onPress={handlePrevMonth} style={themed($arrowButton)}>
+          <Icon icon="caretLeft" size={20} />
+        </TouchableOpacity>
 
-      <Text text={displayMonth} style={themed($monthText)} />
+        <View style={themed($monthContainer)}>
+          <Text text={displayMonth} style={themed($monthText)} />
+        </View>
 
-      <TouchableOpacity onPress={handleNextMonth} style={themed($arrowButton)}>
-        <Icon icon="caretRight" size={20} />
-      </TouchableOpacity>
+        <TouchableOpacity onPress={handleNextMonth} style={themed($arrowButton)}>
+          <Icon icon="caretRight" size={20} />
+        </TouchableOpacity>
+      </View>
     </View>
   )
 }
 
-// Styles
+// Updated styles
 const $container: ThemedStyle<ViewStyle> = ({ spacing, colors }) => ({
+  paddingVertical: spacing.md,
+  backgroundColor: colors.background,
+  alignItems: "center",
+})
+
+const $controlsContainer: ThemedStyle<ViewStyle> = () => ({
   flexDirection: "row",
   alignItems: "center",
   justifyContent: "center",
-  paddingVertical: spacing.md,
-  backgroundColor: colors.background,
 })
 
-const $monthText: ThemedStyle<TextStyle> = ({ spacing }) => ({
+const $monthContainer: ThemedStyle<ViewStyle> = () => ({
+  width: 180, // Fixed width to accommodate longest month name
+  alignItems: "center",
+})
+
+const $monthText: ThemedStyle<TextStyle> = () => ({
   fontSize: 18,
   fontWeight: "600",
-  marginHorizontal: spacing.md,
 })
 
 const $arrowButton: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   padding: spacing.xs,
+  width: 40, // Fixed width
+  alignItems: "center",
 })
