@@ -1,5 +1,5 @@
 // app/screens/TransactionScreen.tsx
-import React, { FC, useCallback, useEffect, useMemo, useState } from "react"
+import React, { FC, useCallback, useMemo, useState } from "react"
 import {
   ActivityIndicator,
   TextStyle,
@@ -32,7 +32,6 @@ import {
   TransactionFilterModal,
   AppliedFilters,
 } from "@/components/Transaction"
-import { ScrollView } from "react-native-gesture-handler"
 
 // Helper type for the section data
 interface TransactionSection {
@@ -301,6 +300,7 @@ const $loaderColor: ThemedStyle<{ color: string }> = ({ colors }) => ({
 const $listContent: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flexGrow: 1,
   paddingBottom: spacing.lg,
+  paddingHorizontal: spacing.lg,
 })
 
 const $emptyState: ThemedStyle<ViewStyle> = ({ spacing }) => ({
