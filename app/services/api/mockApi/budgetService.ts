@@ -18,7 +18,7 @@ const mockBudgets: Budget[] = [
     category: "food and drinks",
     allocated: 15000,
     spent: 12300,
-    month: "2025-02",
+    month: "2025-03",
     year: 2025,
   },
   {
@@ -26,7 +26,7 @@ const mockBudgets: Budget[] = [
     category: "shopping",
     allocated: 8000,
     spent: 7200,
-    month: "2025-02",
+    month: "2025-03",
     year: 2025,
   },
   {
@@ -34,7 +34,7 @@ const mockBudgets: Budget[] = [
     category: "entertainment",
     allocated: 5000,
     spent: 5500,
-    month: "2025-02",
+    month: "2025-03",
     year: 2025,
   },
   {
@@ -42,7 +42,7 @@ const mockBudgets: Budget[] = [
     category: "transportation",
     allocated: 3000,
     spent: 1800,
-    month: "2025-02",
+    month: "2025-03",
     year: 2025,
   },
 ]
