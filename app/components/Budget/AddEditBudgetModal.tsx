@@ -1,21 +1,17 @@
 // app/components/Budget/AddEditBudgetModal.tsx
-import React, { useEffect, useState } from "react"
-import {
-  View,
-  TextInput,
-  Modal,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  Keyboard,
-  ViewStyle,
-  TextStyle,
-  Platform,
-} from "react-native"
+import React, { useCallback, useEffect, useRef, useState, useMemo } from "react"
+import { View, TextInput, TouchableOpacity, ViewStyle, TextStyle, Keyboard } from "react-native"
 import { Text, Button } from "@/components"
+import BottomSheet, { BottomSheetBackdrop, BottomSheetView } from "@gorhom/bottom-sheet"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
 import { useAppDispatch, useAppSelector } from "@/store/store"
-import { addBudget, updateBudget, deleteBudget } from "@/store/budget/budgetSlice"
+import {
+  addBudget,
+  updateBudget,
+  deleteBudget,
+  toggleAddEditModal,
+} from "@/store/budget/budgetSlice"
 import { CategorySelector } from "./CategorySelector"
 
 interface AddEditBudgetModalProps {
@@ -27,15 +23,20 @@ export const AddEditBudgetModal = ({ visible, onClose }: AddEditBudgetModalProps
   const { themed } = useAppTheme()
   const dispatch = useAppDispatch()
   const { currentEditBudget, currentMonth } = useAppSelector((state) => state.budget)
+  const bottomSheetRef = useRef<BottomSheet>(null)
 
-  // Local state for form fields
+  // Local state
   const [category, setCategory] = useState("")
   const [amount, setAmount] = useState("")
   const [isCategorySelectorVisible, setIsCategorySelectorVisible] = useState(false)
 
-  // Reset form when modal opens/closes
+  // Snap points
+  const snapPoints = useMemo(() => ["50%"], [])
+
+  // Handle visibility changes
   useEffect(() => {
     if (visible) {
+      // Reset form fields when opening
       if (currentEditBudget) {
         setCategory(currentEditBudget.category)
         setAmount(currentEditBudget.allocated.toString())
@@ -43,14 +44,39 @@ export const AddEditBudgetModal = ({ visible, onClose }: AddEditBudgetModalProps
         setCategory("")
         setAmount("")
       }
+
+      // Need setTimeout to ensure component is mounted
+      setTimeout(() => {
+        bottomSheetRef.current?.expand()
+      }, 100)
+    } else {
+      bottomSheetRef.current?.close()
     }
   }, [visible, currentEditBudget])
+
+  // Handle sheet changes
+  const handleSheetChanges = useCallback(
+    (index: number) => {
+      if (index === -1) {
+        dispatch(toggleAddEditModal(false))
+      }
+    },
+    [dispatch],
+  )
+
+  // Customize backdrop
+  const renderBackdrop = useCallback(
+    (props: any) => (
+      <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={0} opacity={0.5} />
+    ),
+    [],
+  )
 
   // Handle form submission
   const handleSubmit = () => {
     // Validate form
     if (!category || !amount || isNaN(Number(amount)) || Number(amount) <= 0) {
-      return // Show error message
+      return // In a real app, you'd show validation errors
     }
 
     const budgetData = {
@@ -72,14 +98,14 @@ export const AddEditBudgetModal = ({ visible, onClose }: AddEditBudgetModalProps
       dispatch(addBudget(budgetData))
     }
 
-    onClose()
+    dispatch(toggleAddEditModal(false))
   }
 
   // Handle budget deletion
   const handleDelete = () => {
     if (currentEditBudget) {
       dispatch(deleteBudget(currentEditBudget.id))
-      onClose()
+      dispatch(toggleAddEditModal(false))
     }
   }
 
@@ -90,72 +116,85 @@ export const AddEditBudgetModal = ({ visible, onClose }: AddEditBudgetModalProps
   }
 
   return (
-    <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={themed($modalOverlay)}>
-          <View style={themed($modalContainer)}>
-            <View style={themed($modalHeader)}>
-              <Text
-                text={currentEditBudget ? "Edit Budget" : "Add New Budget"}
-                style={themed($modalTitle)}
-              />
-              <TouchableOpacity onPress={onClose} style={themed($closeButton)}>
-                <Text text="✕" style={themed($closeButtonText)} />
+    <>
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={visible ? 0 : -1}
+        snapPoints={snapPoints}
+        onChange={handleSheetChanges}
+        enablePanDownToClose
+        backdropComponent={renderBackdrop}
+        handleIndicatorStyle={themed($handleIndicator)}
+        backgroundStyle={themed($sheetBackground)}
+      >
+        <BottomSheetView style={themed($contentContainer)}>
+          <View style={themed($modalHeader)}>
+            <Text
+              text={currentEditBudget ? "Edit Budget" : "Add New Budget"}
+              style={themed($modalTitle)}
+            />
+            <TouchableOpacity
+              onPress={() => dispatch(toggleAddEditModal(false))}
+              style={themed($closeButton)}
+            >
+              <Text text="✕" style={themed($closeButtonText)} />
+            </TouchableOpacity>
+          </View>
+
+          <View style={themed($formContainer)}>
+            {/* Category Selector */}
+            <View style={themed($inputContainer)}>
+              <Text text="Category" style={themed($inputLabel)} />
+              <TouchableOpacity
+                style={themed($categoryInput)}
+                onPress={() => setIsCategorySelectorVisible(true)}
+              >
+                <Text
+                  text={category || "Select a category"}
+                  style={[themed($categoryText), !category && themed($placeholderText)]}
+                />
               </TouchableOpacity>
             </View>
 
-            <View style={themed($formContainer)}>
-              {/* Category Selector */}
-              <View style={themed($inputContainer)}>
-                <Text text="Category" style={themed($inputLabel)} />
-                <TouchableOpacity
-                  style={themed($categoryInput)}
-                  onPress={() => setIsCategorySelectorVisible(true)}
-                >
-                  <Text
-                    text={category || "Select a category"}
-                    style={[themed($categoryText), !category && themed($placeholderText)]}
-                  />
-                </TouchableOpacity>
-              </View>
-
-              {/* Amount Input */}
-              <View style={themed($inputContainer)}>
-                <Text text="Budget Amount (₹)" style={themed($inputLabel)} />
-                <View style={themed($amountInputContainer)}>
-                  <Text text="₹" style={themed($currencySymbol)} />
-                  <TextInput
-                    style={themed($amountInput)}
-                    value={amount}
-                    onChangeText={setAmount}
-                    keyboardType="numeric"
-                    placeholder="0"
-                  />
-                </View>
-              </View>
-
-              {/* Buttons */}
-              <View style={themed($buttonContainer)}>
-                {currentEditBudget && (
-                  <Button
-                    text="Delete"
-                    onPress={handleDelete}
-                    style={themed($deleteButton)}
-                    textStyle={themed($deleteButtonText)}
-                  />
-                )}
-
-                <Button
-                  text={currentEditBudget ? "Update" : "Add"}
-                  onPress={handleSubmit}
-                  style={themed($submitButton)}
-                  textStyle={themed($submitButtonText)}
+            {/* Amount Input */}
+            <View style={themed($inputContainer)}>
+              <Text text="Budget Amount (₹)" style={themed($inputLabel)} />
+              <View style={themed($amountInputContainer)}>
+                <Text text="₹" style={themed($currencySymbol)} />
+                <TextInput
+                  style={themed($amountInput)}
+                  value={amount}
+                  onChangeText={setAmount}
+                  keyboardType="numeric"
+                  placeholder="0"
                 />
               </View>
             </View>
+
+            {/* Buttons */}
+            <View style={themed($buttonContainer)}>
+              {currentEditBudget && (
+                <Button
+                  text="Delete"
+                  onPress={handleDelete}
+                  style={themed($deleteButton)}
+                  textStyle={themed($deleteButtonText)}
+                />
+              )}
+
+              <Button
+                text={currentEditBudget ? "Update" : "Add"}
+                onPress={handleSubmit}
+                style={[
+                  themed($submitButton),
+                  { marginLeft: currentEditBudget ? themed($submitButton).marginLeft : 0 },
+                ]}
+                textStyle={themed($submitButtonText)}
+              />
+            </View>
           </View>
-        </View>
-      </TouchableWithoutFeedback>
+        </BottomSheetView>
+      </BottomSheet>
 
       {/* Category Selector Modal */}
       <CategorySelector
@@ -164,31 +203,31 @@ export const AddEditBudgetModal = ({ visible, onClose }: AddEditBudgetModalProps
         onSelectCategory={handleSelectCategory}
         selectedCategory={category}
       />
-    </Modal>
+    </>
   )
 }
 
 // Styles
-const $modalOverlay: ThemedStyle<ViewStyle> = () => ({
-  flex: 1,
-  backgroundColor: "rgba(0, 0, 0, 0.5)",
-  justifyContent: "flex-end",
+const $sheetBackground: ThemedStyle<ViewStyle> = ({ colors }) => ({
+  backgroundColor: colors.background,
 })
 
-const $modalContainer: ThemedStyle<ViewStyle> = ({ colors }) => ({
-  backgroundColor: colors.background,
-  borderTopLeftRadius: 20,
-  borderTopRightRadius: 20,
-  paddingTop: 20,
-  paddingBottom: Platform.OS === "ios" ? 40 : 20,
+const $handleIndicator: ThemedStyle<ViewStyle> = ({ colors }) => ({
+  backgroundColor: colors.palette.neutral400,
+  width: 40,
+  height: 5,
+})
+
+const $contentContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  flex: 1,
+  paddingHorizontal: spacing.lg,
 })
 
 const $modalHeader: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flexDirection: "row",
   justifyContent: "space-between",
   alignItems: "center",
-  paddingHorizontal: spacing.lg,
-  marginBottom: spacing.md,
+  paddingVertical: spacing.md,
 })
 
 const $modalTitle: ThemedStyle<TextStyle> = () => ({
@@ -204,8 +243,8 @@ const $closeButtonText: ThemedStyle<TextStyle> = () => ({
   fontSize: 24,
 })
 
-const $formContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  paddingHorizontal: spacing.lg,
+const $formContainer: ThemedStyle<ViewStyle> = () => ({
+  flex: 1,
 })
 
 const $inputContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
@@ -260,6 +299,7 @@ const $buttonContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flexDirection: "row",
   justifyContent: "space-between",
   marginTop: spacing.lg,
+  marginBottom: spacing.xl,
 })
 
 const $deleteButton: ThemedStyle<ViewStyle> = ({ colors, spacing }) => ({

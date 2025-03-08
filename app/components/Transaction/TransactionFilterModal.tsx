@@ -427,37 +427,6 @@ const $closeButton: ThemedStyle<ViewStyle> = () => ({
   padding: 8,
 })
 
-const $tabsContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  flexDirection: "row",
-  paddingVertical: spacing.sm,
-  paddingRight: spacing.lg,
-})
-
-const $filterTab: ThemedStyle<ViewStyle> = ({ spacing, colors }) => ({
-  paddingHorizontal: spacing.md,
-  paddingVertical: spacing.xs,
-  borderRadius: 20,
-  borderWidth: 1,
-  borderColor: colors.palette.neutral300,
-  marginRight: spacing.sm,
-  backgroundColor: colors.palette.neutral200,
-})
-
-const $activeFilterTab: ThemedStyle<ViewStyle> = ({ colors }) => ({
-  borderColor: colors.palette.neutral800,
-  backgroundColor: colors.palette.neutral100,
-})
-
-const $filterTabText: ThemedStyle<TextStyle> = ({ colors }) => ({
-  fontSize: 14,
-  color: colors.textDim,
-})
-
-const $activeFilterTabText: ThemedStyle<TextStyle> = ({ colors }) => ({
-  color: colors.text,
-  fontWeight: "600",
-})
-
 const $filterContentContainer: ThemedStyle<ViewStyle> = () => ({
   flex: 1,
   paddingVertical: 20,
