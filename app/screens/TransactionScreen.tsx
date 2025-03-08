@@ -175,7 +175,7 @@ export const TransactionScreen: FC<MainTabScreenProps<"Transactions">> = () => {
         ) : (
           <View style={themed($headerContent)}>
             <View style={themed($titleContainer)}>
-              <Text preset="heading" text="transactions" style={themed($headerText)} />
+              <Text preset="heading" text="Transactions" style={themed($headerText)} />
             </View>
             <TouchableOpacity
               style={themed($searchButton)}
