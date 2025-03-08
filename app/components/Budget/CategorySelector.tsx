@@ -2,10 +2,10 @@
 import React, { useCallback, useEffect, useRef, useMemo } from "react"
 import { View, ScrollView, TouchableOpacity, ViewStyle, TextStyle } from "react-native"
 import { Text } from "@/components"
-import BottomSheet, { BottomSheetBackdrop, BottomSheetScrollView } from "@gorhom/bottom-sheet"
+import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
-import { TransactionCategory } from "@/types"
+import { useAppSelector } from "@/store/store"
 
 interface CategorySelectorProps {
   visible: boolean
@@ -13,24 +13,6 @@ interface CategorySelectorProps {
   onSelectCategory: (category: string) => void
   selectedCategory: string
 }
-
-// Available categories
-const AVAILABLE_CATEGORIES: TransactionCategory[] = [
-  "food and drinks",
-  "shopping",
-  "entertainment",
-  "banking and finance",
-  "medical",
-  "apps and software",
-  "automobile and fuel",
-  "card and finance charges",
-  "education",
-  "emi",
-  "bills and utilities",
-  "travel",
-  "investment",
-  "other",
-]
 
 export const CategorySelector = ({
   visible,
@@ -40,6 +22,8 @@ export const CategorySelector = ({
 }: CategorySelectorProps) => {
   const { themed } = useAppTheme()
   const bottomSheetRef = useRef<BottomSheet>(null)
+
+  const { categories } = useAppSelector((state) => state.transactions)
 
   // Snap points
   const snapPoints = useMemo(() => ["70%"], [])
@@ -89,29 +73,31 @@ export const CategorySelector = ({
         </TouchableOpacity>
       </View>
 
-      <BottomSheetScrollView contentContainerStyle={themed($categoryListContainer)}>
-        {AVAILABLE_CATEGORIES.map((category) => (
-          <TouchableOpacity
-            key={category}
-            style={[
-              themed($categoryItem),
-              selectedCategory === category && themed($selectedCategory),
-            ]}
-            onPress={() => {
-              onSelectCategory(category)
-              onClose()
-            }}
-          >
-            <Text
-              text={category}
+      <View style={{ maxHeight: 400 }}>
+        <ScrollView>
+          {categories.map((category) => (
+            <TouchableOpacity
+              key={category}
               style={[
-                themed($categoryText),
-                selectedCategory === category && themed($selectedCategoryText),
+                themed($categoryItem),
+                selectedCategory === category && themed($selectedCategory),
               ]}
-            />
-          </TouchableOpacity>
-        ))}
-      </BottomSheetScrollView>
+              onPress={() => {
+                onSelectCategory(category)
+                onClose()
+              }}
+            >
+              <Text
+                text={category}
+                style={[
+                  themed($categoryText),
+                  selectedCategory === category && themed($selectedCategoryText),
+                ]}
+              />
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
     </BottomSheet>
   )
 }
@@ -146,11 +132,6 @@ const $closeButton: ThemedStyle<ViewStyle> = () => ({
 
 const $closeButtonText: ThemedStyle<TextStyle> = () => ({
   fontSize: 24,
-})
-
-const $categoryListContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  paddingHorizontal: spacing.lg,
-  paddingBottom: spacing.xl,
 })
 
 const $categoryItem: ThemedStyle<ViewStyle> = ({ colors, spacing }) => ({
