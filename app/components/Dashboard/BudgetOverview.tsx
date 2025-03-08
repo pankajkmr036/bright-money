@@ -1,9 +1,3 @@
-// app/components/Dashboard/BudgetOverview.tsx
-import React from "react"
-import { TextStyle, View, ViewStyle } from "react-native"
-import { Text } from "@/components"
-import { useAppTheme } from "@/utils/useAppTheme"
-
 import { useNavigation } from "@react-navigation/native"
 import { CardHeader, ContentCard } from "@/components/AdvancedCard"
 import { LinkButton } from "../Buttons"
