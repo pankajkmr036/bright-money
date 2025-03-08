@@ -69,7 +69,6 @@ const $container: ThemedStyle<ViewStyle> = ({ spacing, colors }) => ({
   paddingVertical: spacing.md,
   borderBottomWidth: 1,
   borderBottomColor: colors.palette.neutral300,
-  paddingHorizontal: spacing.lg,
 })
 
 const $avatarContainer: ThemedStyle<ViewStyle> = ({ colors }) => ({
