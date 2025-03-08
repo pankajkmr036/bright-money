@@ -54,7 +54,6 @@ export const BudgetList = ({
 
 const $container: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   paddingTop: spacing.md,
-  paddingHorizontal: spacing.lg,
   flex: 1, // Take up all available space
 })
 

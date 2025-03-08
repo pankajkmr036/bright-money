@@ -115,8 +115,9 @@ const $headerText: ThemedStyle<TextStyle> = () => ({
 })
 
 // New style for budget list container that takes remaining space
-const $budgetListContainer: ThemedStyle<ViewStyle> = () => ({
+const $budgetListContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flex: 1, // Take remaining space
+  paddingHorizontal: spacing.lg,
 })
 
 const $loadingContainer: ThemedStyle<ViewStyle> = () => ({

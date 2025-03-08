@@ -67,7 +67,6 @@ export const BudgetSummary = ({ budgets }: BudgetSummaryProps) => {
 
 // Styles
 const $container: ThemedStyle<ViewStyle> = ({ spacing, colors }) => ({
-  paddingHorizontal: spacing.lg,
   paddingVertical: spacing.md,
   marginBottom: spacing.sm,
 })
