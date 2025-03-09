@@ -6,8 +6,6 @@ A comprehensive mobile application for managing personal finances, incorporating
 
 ## Screenshots
 
-### Screenshots
-
 |                                                                       |                                                                    |                                                                      |
 | --------------------------------------------------------------------- | ------------------------------------------------------------------ | -------------------------------------------------------------------- |
 | <img src="./assets/screenshots/login-screen.png" width="100">         | <img src="./assets/screenshots/balance-overview.png" width="100">  | <img src="./assets/screenshots/budget-overview.png" width="100">     |
@@ -19,7 +17,7 @@ A comprehensive mobile application for managing personal finances, incorporating
 | <img src="./assets/screenshots/update-budget.png" width="100">        |                                                                    |                                                                      |
 | Update/Delete Budget                                                  |                                                                    |                                                                      |
 
-## Video
+
 
 ## Overview
 
