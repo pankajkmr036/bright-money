@@ -6,35 +6,28 @@ import { Text } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
 import { CardHeader, ContentCard } from "../AdvancedCard"
-
-// Mock data for monthly expenses (in a real app, this would come from the store)
-const MONTHLY_DATA = [
-  { month: "Sep", amount: 32000 },
-  { month: "Oct", amount: 38500 },
-  { month: "Nov", amount: 26700 },
-  { month: "Dec", amount: 85410 },
-  { month: "Jan", amount: 100730 },
-  { month: "Feb", amount: 59760 },
-]
+import { useAppSelector } from "@/store/store"
 
 const screenWidth = Dimensions.get("window").width
 
 export const MonthlyExpenseGraph = () => {
   const { themed } = useAppTheme()
 
+  const { data } = useAppSelector((state) => state.dashboard)
+  const monthlyExpenses = data?.monthlyExpenses || []
   // Prepare data for the chart
   const chartData = useMemo(() => {
     return {
-      labels: MONTHLY_DATA.map((item) => item.month),
+      labels: monthlyExpenses.map((item) => item.month),
       datasets: [
         {
-          data: MONTHLY_DATA.map((item) => item.amount / 1000), // Convert to thousands for display
+          data: monthlyExpenses.map((item) => item.amount / 1000), // Convert to thousands for display
           color: (opacity = 1) => `rgba(126, 88, 148, ${opacity})`, // Purple color matching our theme
           strokeWidth: 2,
         },
       ],
     }
-  }, [])
+  }, [monthlyExpenses])
 
   const chartConfig = {
     backgroundColor: "transparent",
@@ -58,20 +51,22 @@ export const MonthlyExpenseGraph = () => {
     <ContentCard>
       <CardHeader title="Monthly Expenses" subtitle="Last 6 Months" />
 
-      <LineChart
-        data={chartData}
-        width={screenWidth - 80}
-        height={220}
-        chartConfig={chartConfig}
-        bezier
-        style={themed($chart)}
-        withInnerLines={false}
-        withOuterLines={true}
-        withVerticalLines={false}
-        withHorizontalLines={true}
-        yAxisSuffix="K"
-        yAxisInterval={1}
-      />
+      {monthlyExpenses?.length ? (
+        <LineChart
+          data={chartData}
+          width={screenWidth - 80}
+          height={220}
+          chartConfig={chartConfig}
+          bezier
+          style={themed($chart)}
+          withInnerLines={false}
+          withOuterLines={true}
+          withVerticalLines={false}
+          withHorizontalLines={true}
+          yAxisSuffix="K"
+          yAxisInterval={1}
+        />
+      ) : null}
 
       <View style={themed($legendContainer)}>
         <View style={themed($legendItem)}>
