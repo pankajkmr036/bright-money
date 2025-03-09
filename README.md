@@ -6,29 +6,18 @@ A comprehensive mobile application for managing personal finances, incorporating
 
 ## Screenshots
 
-<style>
-.image-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-.image-container img {
-  width: 100px;
-}
-</style>
+### Screenshots
 
-<div class="image-container">
-  <img src="./assets/screenshots/login-screen.png" alt="Login Screen">
-  <img src="./assets/screenshots/balance-overview.png" alt="Balance Summary">
-  <img src="./assets/screenshots/budget-overview.png" alt="Budget Overview">
-  <img src="./assets/screenshots/expense-distribution.png" alt="Category wise expenses">
-  <img src="./assets/screenshots/monthly-expenses.png" alt="Monthly expenses">
-  <img src="./assets/screenshots/recent-transactions.png" alt="Recent transactions">
-  <img src="./assets/screenshots/all-transactions.png" alt="All transactions">
-  <img src="./assets/screenshots/budget-management.png" alt="Budget management">
-  <img src="./assets/screenshots/add-budget.png" alt="Add budget">
-  <img src="./assets/screenshots/update-budget.png" alt="Update/delete budget">
-</div>
+|                                                                       |                                                                    |                                                                      |
+| --------------------------------------------------------------------- | ------------------------------------------------------------------ | -------------------------------------------------------------------- |
+| <img src="./assets/screenshots/login-screen.png" width="100">         | <img src="./assets/screenshots/balance-overview.png" width="100">  | <img src="./assets/screenshots/budget-overview.png" width="100">     |
+| Login Screen                                                          | Balance Summary                                                    | Budget Overview                                                      |
+| <img src="./assets/screenshots/expense-distribution.png" width="100"> | <img src="./assets/screenshots/monthly-expenses.png" width="100">  | <img src="./assets/screenshots/recent-transactions.png" width="100"> |
+| Category Wise Expenses                                                | Monthly Expenses                                                   | Recent Transactions                                                  |
+| <img src="./assets/screenshots/all-transactions.png" width="100">     | <img src="./assets/screenshots/budget-management.png" width="100"> | <img src="./assets/screenshots/add-budget.png" width="100">          |
+| All Transactions                                                      | Budget Management                                                  | Add Budget                                                           |
+| <img src="./assets/screenshots/update-budget.png" width="100">        |                                                                    |                                                                      |
+| Update/Delete Budget                                                  |                                                                    |                                                                      |
 
 ## Video
 
