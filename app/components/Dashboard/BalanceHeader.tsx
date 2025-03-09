@@ -9,9 +9,10 @@ import { useAppSelector } from "@/store/store"
 export const BalanceHeader = () => {
   const { themed } = useAppTheme()
   const user = useAppSelector((state) => state.auth.user)
+  const { data } = useAppSelector((state) => state.dashboard)
 
   // For demo purposes, hardcoded balance
-  const balance = "9,896.55"
+  const balance = data?.balance?.available
   const firstName = user?.name?.split(" ")[0] || "User"
 
   return (
@@ -22,7 +23,7 @@ export const BalanceHeader = () => {
 
       <View style={themed($balanceContainer)}>
         <Text text={`hey ${firstName},`} style={themed($greeting)} />
-        <Text text="here is your total balance" style={themed($balanceLabel)} />
+        <Text text="here is your available limit" style={themed($balanceLabel)} />
         <Text text={`₹${balance}`} style={themed($balanceAmount)} />
       </View>
     </View>
