@@ -1,6 +1,5 @@
-// app/components/Dashboard/ExpenseDistributionChart.tsx
 import React, { useState } from "react"
-import { View, ViewStyle, TextStyle, Dimensions } from "react-native"
+import { View, ViewStyle, TextStyle, Dimensions, ActivityIndicator } from "react-native"
 import { PieChart } from "react-native-chart-kit"
 import { Text } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
@@ -15,8 +14,20 @@ export const ExpenseDistributionChart = () => {
   const { themed } = useAppTheme()
   const [expanded, setExpanded] = useState(false)
 
-  const { data } = useAppSelector((state) => state.dashboard)
+  // Get data and loading state from Redux
+  const { data, isLoading } = useAppSelector((state) => state.dashboard)
   const expenseDistribution = data?.expenseDistribution || []
+
+  const toggleExpand = () => {
+    setExpanded(!expanded)
+  }
+
+  const chartConfig = {
+    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+    strokeWidth: 0,
+    barPercentage: 0.5,
+  }
+
   // Calculate total expense
   const totalExpense = expenseDistribution.reduce((sum, item) => sum + item.amount, 0)
   const formattedTotal = new Intl.NumberFormat("en-IN", {
@@ -44,75 +55,102 @@ export const ExpenseDistributionChart = () => {
       .replace("₹", "₹")
   }
 
-  const toggleExpand = () => {
-    setExpanded(!expanded)
-  }
-
-  const chartConfig = {
-    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-    strokeWidth: 0,
-    barPercentage: 0.5,
-  }
-
   return (
     <ContentCard>
       <CardHeader title="Top Spends Category" />
 
-      {expenseDistribution?.length ? (
-        <Text style={themed($mainCategory)}>
-          {expenseDistribution?.[0].percentage}% on {expenseDistribution?.[0].category}
-        </Text>
-      ) : null}
+      {isLoading ? (
+        <View style={themed($loaderContainer)}>
+          <ActivityIndicator size="large" color={themed($loaderColor).color} />
+        </View>
+      ) : !expenseDistribution.length ? (
+        <View style={themed($emptyContainer)}>
+          <Text text="No expense data available" style={themed($emptyText)} />
+        </View>
+      ) : (
+        <>
+          {expenseDistribution?.[0] && (
+            <Text style={themed($mainCategory)}>
+              {expenseDistribution[0].percentage}% on {expenseDistribution[0].category}
+            </Text>
+          )}
 
-      {/*  pie chart */}
-      <View style={themed($chartContainer)}>
-        <PieChart
-          data={chartData}
-          width={screenWidth}
-          height={180}
-          chartConfig={chartConfig}
-          accessor="population"
-          backgroundColor="transparent"
-          paddingLeft="100"
-          absolute={false}
-          hasLegend={false}
-        />
-      </View>
+          {/* Pie chart */}
+          <View style={themed($chartContainer)}>
+            <PieChart
+              data={chartData}
+              width={screenWidth}
+              height={180}
+              chartConfig={chartConfig}
+              accessor="population"
+              backgroundColor="transparent"
+              paddingLeft="100"
+              absolute={false}
+              hasLegend={false}
+            />
+          </View>
 
-      {/* Total amount below chart */}
-      <View style={themed($totalContainer)}>
-        <Text style={themed($totalLabel)}>Total</Text>
-        <Text style={themed($totalAmount)}>₹{formattedTotal}</Text>
-      </View>
+          {/* Total amount below chart */}
+          <View style={themed($totalContainer)}>
+            <Text style={themed($totalLabel)}>Total</Text>
+            <Text style={themed($totalAmount)}>₹{formattedTotal}</Text>
+          </View>
 
-      {/* Category list */}
-      <View style={themed($categoryList)}>
-        {expenseDistribution
-          .slice(0, expanded ? expenseDistribution.length : 2)
-          .map((item, index) => (
-            <View key={index} style={themed($categoryItem)}>
-              <View style={themed($categoryLeftSection)}>
-                <View style={[themed($categoryColorBox), { backgroundColor: item.color }]} />
-                <View>
-                  <Text style={themed($categoryName)}>{item.category}</Text>
-                  <Text style={themed($transactionCount)}>
-                    {item.transactions} transaction{item.transactions > 1 ? "s" : ""}
-                  </Text>
+          {/* Category list */}
+          <View style={themed($categoryList)}>
+            {expenseDistribution
+              .slice(0, expanded ? expenseDistribution.length : 2)
+              .map((item, index) => (
+                <View key={index} style={themed($categoryItem)}>
+                  <View style={themed($categoryLeftSection)}>
+                    <View style={[themed($categoryColorBox), { backgroundColor: item.color }]} />
+                    <View>
+                      <Text style={themed($categoryName)}>{item.category}</Text>
+                      <Text style={themed($transactionCount)}>
+                        {item.transactions} transaction{item.transactions > 1 ? "s" : ""}
+                      </Text>
+                    </View>
+                  </View>
+
+                  <View style={themed($categoryRightSection)}>
+                    <Text style={themed($categoryAmount)}>{formatAmount(item.amount)}</Text>
+                    <Text style={themed($categoryPercentage)}>{item.percentage}%</Text>
+                  </View>
                 </View>
-              </View>
+              ))}
+          </View>
 
-              <View style={themed($categoryRightSection)}>
-                <Text style={themed($categoryAmount)}>{formatAmount(item.amount)}</Text>
-                <Text style={themed($categoryPercentage)}>{item.percentage}%</Text>
-              </View>
-            </View>
-          ))}
-      </View>
-
-      <LinkButton text={expanded ? "View less" : "View more"} onPress={toggleExpand} />
+          <LinkButton text={expanded ? "View less" : "View more"} onPress={toggleExpand} />
+        </>
+      )}
     </ContentCard>
   )
 }
+
+// New styles
+const $loaderContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  padding: spacing.xl,
+  alignItems: "center",
+  justifyContent: "center",
+  minHeight: 200,
+})
+
+const $loaderColor: ThemedStyle<{ color: string }> = ({ colors }) => ({
+  color: colors.tint,
+})
+
+const $emptyContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  padding: spacing.xl,
+  alignItems: "center",
+  justifyContent: "center",
+  minHeight: 200,
+})
+
+const $emptyText: ThemedStyle<TextStyle> = ({ colors }) => ({
+  fontSize: 16,
+  color: colors.textDim,
+  textAlign: "center",
+})
 
 const $mainCategory: ThemedStyle<TextStyle> = () => ({
   fontSize: 28,
