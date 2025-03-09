@@ -82,6 +82,7 @@ const authSlice = createSlice({
         state.token = null
         state.isAuthenticated = false
         state.error = null
+        state.isLoading = false
       })
       .addCase(checkAuth.pending, (state) => {
         state.isLoading = true
