@@ -7,34 +7,35 @@ A comprehensive mobile application for managing personal finances, incorporating
 ## Screenshots
 
 ### Login Screen
-![Login Screen](./assets/screenshots/login-screen.png)
+<img src="./assets/screenshots/login-screen.png" width="400">
 
 ### Balance Summary
-![Dashboard](./assets/screenshots/balance-overview.png)
+<img src="./assets/screenshots/balance-overview.png" width="400">
 
 ### Budget Overview
-![Transactions](./assets/screenshots/budget-overview.png)
+<img src="./assets/screenshots/budget-overview.png" width="400">
 
-### Categroy wise expenses
-![Budget](./assets/screenshots/expense-distribution.png)
+### Category wise expenses
+<img src="./assets/screenshots/expense-distribution.png" width="400">
 
 ### Monthly expenses
-![Budget](./assets/screenshots/monthly-expenses.png)
+<img src="./assets/screenshots/monthly-expenses.png" width="400">
 
-### Recet transactions
-![Budget](./assets/screenshots/recent-transactions.png)
+### Recent transactions
+<img src="./assets/screenshots/recent-transactions.png" width="400">
 
 ### All transactions
-![Budget](./assets/screenshots/all-transactions.png)
+<img src="./assets/screenshots/all-transactions.png" width="400">
 
 ### Budget management
-![Budget](./assets/screenshots/budget-management.png)
+<img src="./assets/screenshots/budget-management.png" width="400">
 
 ### Add budget
-![Budget](./assets/screenshots/add-budget.png)
+<img src="./assets/screenshots/add-budget.png" width="400">
 
 ### Update/delete budget
-![Budget](./assets/screenshots/update-budget.png)
+<img src="./assets/screenshots/update-budget.png" width="400">
+
 
 
 ## Video
