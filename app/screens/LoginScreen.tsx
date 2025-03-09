@@ -7,6 +7,7 @@ import { useAppTheme } from "@/utils/useAppTheme"
 import { login, clearError } from "@/store/auth/authSlice"
 import { colors, type ThemedStyle } from "@/theme"
 import type { TextFieldAccessoryProps } from "@/components/TextField"
+import { ActionButton } from "@/components/Buttons"
 
 export interface LoginScreenProps extends AppStackScreenProps<"Login"> {}
 
@@ -149,26 +150,10 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({}) => {
 
           {error && <Text text={error} style={themed($errorText)} />}
 
-          <Button
-            text="Sign In"
-            style={[themed($loginButton), isLoading && themed($disabledButton)]}
-            textStyle={themed($loginButtonText)}
-            disabled={isLoading}
-            onPress={handleLogin}
-            preset="filled"
-            LeftAccessory={isLoading ? LoadingIndicator : undefined}
-          />
+          <ActionButton text="Sign In" variant="primary" onPress={handleLogin} />
         </View>
       </View>
     </Screen>
-  )
-}
-
-const LoadingIndicator = () => {
-  return (
-    <View>
-      <ActivityIndicator size="small" color={colors.palette.neutral100} />
-    </View>
   )
 }
 
@@ -212,21 +197,4 @@ const $errorText: ThemedStyle<TextStyle> = ({ colors, spacing }) => ({
   color: colors.error,
   textAlign: "center",
   marginBottom: spacing.md,
-})
-
-const $loginButton: ThemedStyle<ViewStyle> = ({ colors, spacing }) => ({
-  backgroundColor: colors.tint,
-  borderWidth: 0,
-  marginVertical: spacing.lg,
-  height: 50,
-})
-
-const $disabledButton: ThemedStyle<ViewStyle> = () => ({
-  opacity: 0.7,
-})
-
-const $loginButtonText: ThemedStyle<TextStyle> = ({ colors, typography }) => ({
-  color: colors.palette.neutral100,
-  fontSize: 16,
-  fontFamily: typography.primary.bold,
 })

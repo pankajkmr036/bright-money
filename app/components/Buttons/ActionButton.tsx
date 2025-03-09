@@ -73,17 +73,17 @@ export const ActionButton = ({
 
 // Primary button (dark background, light text)
 const $primaryButton: ThemedStyle<ViewStyle> = ({ colors, spacing }) => ({
-  backgroundColor: colors.palette.neutral800,
+  backgroundColor: colors.tint,
   justifyContent: "center",
   alignItems: "center",
   paddingHorizontal: spacing.md,
   borderRadius: 8,
 })
 
-const $primaryButtonText: ThemedStyle<TextStyle> = ({ colors }) => ({
-  fontSize: 16,
-  fontWeight: "500",
+const $primaryButtonText: ThemedStyle<TextStyle> = ({ colors, typography }) => ({
   color: colors.palette.neutral100,
+  fontSize: 16,
+  fontFamily: typography.primary.bold,
 })
 
 // Secondary button (light background, dark text)
