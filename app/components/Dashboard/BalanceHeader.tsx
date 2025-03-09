@@ -16,7 +16,7 @@ export const BalanceHeader = () => {
   const balance = data?.balance?.available
 
   // Show empty state when no balance data is available
-  if (!balance) {
+  if (!isLoading && !balance) {
     return (
       <View style={themed($container)}>
         <View style={themed($avatarContainer)}>
