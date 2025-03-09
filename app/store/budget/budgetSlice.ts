@@ -1,6 +1,7 @@
 // app/store/budget/budgetSlice.ts
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
 import { Budget, budgetApiService } from "@/services/api/mockApi"
+import { getCurrentMonth } from "@/utils/formatDate"
 
 interface BudgetState {
   budgets: Budget[]
@@ -12,10 +13,6 @@ interface BudgetState {
 }
 
 // Get current month in YYYY-MM format
-const getCurrentMonth = () => {
-  const now = new Date()
-  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`
-}
 
 const initialState: BudgetState = {
   budgets: [],

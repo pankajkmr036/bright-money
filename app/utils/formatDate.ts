@@ -47,3 +47,8 @@ export const formatDate = (date: string, dateFormat?: string, options?: Options)
   }
   return format(parseISO(date), dateFormat ?? "MMM dd, yyyy", dateOptions)
 }
+
+export const getCurrentMonth = () => {
+  const now = new Date()
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`
+}
