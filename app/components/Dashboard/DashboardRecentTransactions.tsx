@@ -1,5 +1,6 @@
+// Updated DashboardRecentTransactions.tsx
 import React from "react"
-import { View, ViewStyle, ActivityIndicator } from "react-native"
+import { View, ViewStyle, ActivityIndicator, TextStyle } from "react-native"
 import { Text, ListView } from "@/components"
 import { TransactionItem } from "@/components/Transaction"
 import type { ThemedStyle } from "@/theme"
@@ -19,7 +20,6 @@ export const DashboardRecentTransactions = () => {
   const recentTransactions = transactions.slice(0, 5)
 
   const handleViewAllTransactions = () => {
-    // Navigate to Transactions screen
     navigation.navigate("Transactions")
   }
 
@@ -31,25 +31,46 @@ export const DashboardRecentTransactions = () => {
         <View style={themed($loadingContainer)}>
           <ActivityIndicator size="large" color={themed($loaderColor).color} />
         </View>
+      ) : !recentTransactions.length ? (
+        <View style={themed($emptyContainer)}>
+          <Text text="No recent transactions" style={themed($emptyText)} />
+        </View>
       ) : (
-        <ListView
-          data={recentTransactions}
-          renderItem={({ item }) => <TransactionItem transaction={item} />}
-          estimatedItemSize={70}
-        />
-      )}
+        <>
+          <ListView
+            data={recentTransactions}
+            renderItem={({ item }) => <TransactionItem transaction={item} />}
+            estimatedItemSize={70}
+          />
 
-      <LinkButton text="View All Transactions" onPress={handleViewAllTransactions} />
+          <LinkButton text="View All Transactions" onPress={handleViewAllTransactions} />
+        </>
+      )}
     </ContentCard>
   )
 }
 
-const $loadingContainer: ThemedStyle<ViewStyle> = () => ({
-  flex: 1,
+// New styles
+const $loadingContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  padding: spacing.xl,
   justifyContent: "center",
   alignItems: "center",
+  minHeight: 150,
 })
 
 const $loaderColor: ThemedStyle<{ color: string }> = ({ colors }) => ({
   color: colors.tint,
+})
+
+const $emptyContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  padding: spacing.xl,
+  justifyContent: "center",
+  alignItems: "center",
+  minHeight: 150,
+})
+
+const $emptyText: ThemedStyle<TextStyle> = ({ colors }) => ({
+  fontSize: 16,
+  color: colors.textDim,
+  textAlign: "center",
 })
