@@ -20,7 +20,7 @@ export const DashboardRecentTransactions = () => {
   const recentTransactions = transactions.slice(0, 5)
 
   const handleViewAllTransactions = () => {
-    navigation.navigate("Transactions")
+    navigation.navigate("Transactions" as never)
   }
 
   return (
