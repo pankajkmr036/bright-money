@@ -96,20 +96,6 @@ export const ScrollableCards = () => {
   )
 }
 
-const $emptyContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  padding: spacing.xl,
-  alignItems: "center",
-  justifyContent: "center",
-  backgroundColor: "white",
-  borderRadius: 20,
-  marginHorizontal: spacing.lg,
-})
-
-const $emptyText: ThemedStyle<TextStyle> = ({ colors }) => ({
-  fontSize: 16,
-  color: colors.textDim,
-  textAlign: "center",
-})
 const $listContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   paddingHorizontal: spacing.lg,
 })
