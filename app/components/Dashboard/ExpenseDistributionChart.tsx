@@ -7,20 +7,7 @@ import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
 import { CardHeader, ContentCard } from "../AdvancedCard"
 import { LinkButton } from "../Buttons"
-
-// Chart data
-const expenseData = [
-  {
-    name: "banking and finance",
-    amount: 23433,
-    transactions: 1,
-    color: "#7E5894",
-    percentage: 76.9,
-  },
-  { name: "food and drinks", amount: 3143, transactions: 2, color: "#9D73B3", percentage: 10.3 },
-  { name: "apps and software", amount: 1968, transactions: 1, color: "#BDA0CF", percentage: 6.5 },
-  { name: "medical", amount: 1942.39, transactions: 2, color: "#D7C2E0", percentage: 6.4 },
-]
+import { useAppSelector } from "@/store/store"
 
 const screenWidth = Dimensions.get("window").width
 
@@ -28,16 +15,18 @@ export const ExpenseDistributionChart = () => {
   const { themed } = useAppTheme()
   const [expanded, setExpanded] = useState(false)
 
+  const { data } = useAppSelector((state) => state.dashboard)
+  const expenseDistribution = data?.expenseDistribution || []
   // Calculate total expense
-  const totalExpense = expenseData.reduce((sum, item) => sum + item.amount, 0)
+  const totalExpense = expenseDistribution.reduce((sum, item) => sum + item.amount, 0)
   const formattedTotal = new Intl.NumberFormat("en-IN", {
     maximumFractionDigits: 2,
     minimumFractionDigits: 2,
   }).format(totalExpense)
 
   // Format data for the chart
-  const chartData = expenseData.map((item) => ({
-    name: item.name,
+  const chartData = expenseDistribution.map((item) => ({
+    category: item.category,
     population: item.amount,
     color: item.color,
     legendFontColor: "#7F7F7F",
@@ -69,9 +58,11 @@ export const ExpenseDistributionChart = () => {
     <ContentCard>
       <CardHeader title="Top Spends Category" />
 
-      <Text style={themed($mainCategory)}>
-        {expenseData[0].percentage}% on {expenseData[0].name}
-      </Text>
+      {expenseDistribution?.length ? (
+        <Text style={themed($mainCategory)}>
+          {expenseDistribution?.[0].percentage}% on {expenseDistribution?.[0].category}
+        </Text>
+      ) : null}
 
       {/*  pie chart */}
       <View style={themed($chartContainer)}>
@@ -96,24 +87,26 @@ export const ExpenseDistributionChart = () => {
 
       {/* Category list */}
       <View style={themed($categoryList)}>
-        {expenseData.slice(0, expanded ? expenseData.length : 2).map((item, index) => (
-          <View key={index} style={themed($categoryItem)}>
-            <View style={themed($categoryLeftSection)}>
-              <View style={[themed($categoryColorBox), { backgroundColor: item.color }]} />
-              <View>
-                <Text style={themed($categoryName)}>{item.name}</Text>
-                <Text style={themed($transactionCount)}>
-                  {item.transactions} transaction{item.transactions > 1 ? "s" : ""}
-                </Text>
+        {expenseDistribution
+          .slice(0, expanded ? expenseDistribution.length : 2)
+          .map((item, index) => (
+            <View key={index} style={themed($categoryItem)}>
+              <View style={themed($categoryLeftSection)}>
+                <View style={[themed($categoryColorBox), { backgroundColor: item.color }]} />
+                <View>
+                  <Text style={themed($categoryName)}>{item.category}</Text>
+                  <Text style={themed($transactionCount)}>
+                    {item.transactions} transaction{item.transactions > 1 ? "s" : ""}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={themed($categoryRightSection)}>
+                <Text style={themed($categoryAmount)}>{formatAmount(item.amount)}</Text>
+                <Text style={themed($categoryPercentage)}>{item.percentage}%</Text>
               </View>
             </View>
-
-            <View style={themed($categoryRightSection)}>
-              <Text style={themed($categoryAmount)}>{formatAmount(item.amount)}</Text>
-              <Text style={themed($categoryPercentage)}>{item.percentage}%</Text>
-            </View>
-          </View>
-        ))}
+          ))}
       </View>
 
       <LinkButton text={expanded ? "View less" : "View more"} onPress={toggleExpand} />
