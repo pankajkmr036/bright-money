@@ -6,40 +6,31 @@ A comprehensive mobile application for managing personal finances, incorporating
 
 ## Screenshots
 
-### Login Screen
-<img src="./assets/screenshots/login-screen.png" width="400">
+<style>
+.image-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.image-container img {
+  width: 100px;
+}
+</style>
 
-### Balance Summary
-<img src="./assets/screenshots/balance-overview.png" width="400">
-
-### Budget Overview
-<img src="./assets/screenshots/budget-overview.png" width="400">
-
-### Category wise expenses
-<img src="./assets/screenshots/expense-distribution.png" width="400">
-
-### Monthly expenses
-<img src="./assets/screenshots/monthly-expenses.png" width="400">
-
-### Recent transactions
-<img src="./assets/screenshots/recent-transactions.png" width="400">
-
-### All transactions
-<img src="./assets/screenshots/all-transactions.png" width="400">
-
-### Budget management
-<img src="./assets/screenshots/budget-management.png" width="400">
-
-### Add budget
-<img src="./assets/screenshots/add-budget.png" width="400">
-
-### Update/delete budget
-<img src="./assets/screenshots/update-budget.png" width="400">
-
-
+<div class="image-container">
+  <img src="./assets/screenshots/login-screen.png" alt="Login Screen">
+  <img src="./assets/screenshots/balance-overview.png" alt="Balance Summary">
+  <img src="./assets/screenshots/budget-overview.png" alt="Budget Overview">
+  <img src="./assets/screenshots/expense-distribution.png" alt="Category wise expenses">
+  <img src="./assets/screenshots/monthly-expenses.png" alt="Monthly expenses">
+  <img src="./assets/screenshots/recent-transactions.png" alt="Recent transactions">
+  <img src="./assets/screenshots/all-transactions.png" alt="All transactions">
+  <img src="./assets/screenshots/budget-management.png" alt="Budget management">
+  <img src="./assets/screenshots/add-budget.png" alt="Add budget">
+  <img src="./assets/screenshots/update-budget.png" alt="Update/delete budget">
+</div>
 
 ## Video
-
 
 ## Overview
 
