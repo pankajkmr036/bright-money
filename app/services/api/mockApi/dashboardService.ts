@@ -9,11 +9,12 @@ export interface DashboardData {
     currency: string
   }
   monthlyInsights: {
+    id: string
     currentMonth: string // Format: "MMM'YY" (e.g., "FEB'25")
-    currentSpend: number
+    currentSpend: string
     previousMonth: string
-    previousSpend: number
-    comparisonAmount: number
+    previousSpend: string
+    comparisonAmount: string
     isLower: boolean
   }[]
   expenseDistribution: {
@@ -45,29 +46,33 @@ class DashboardApiService {
         available: 8534.23,
         currency: "INR",
       },
+
       monthlyInsights: [
         {
+          id: "1",
           currentMonth: "FEB'25",
-          currentSpend: 59760,
+          currentSpend: "59.76K",
           previousMonth: "JAN'25",
-          previousSpend: 100730,
-          comparisonAmount: 40970,
+          previousSpend: "100.73K",
+          comparisonAmount: "40.97K",
           isLower: true,
         },
         {
+          id: "2",
           currentMonth: "JAN'25",
-          currentSpend: 100730,
+          currentSpend: "100.73K",
           previousMonth: "DEC'24",
-          previousSpend: 85410,
-          comparisonAmount: 15320,
+          previousSpend: "85.41K",
+          comparisonAmount: "15.32K",
           isLower: false,
         },
         {
+          id: "3",
           currentMonth: "DEC'24",
-          currentSpend: 85410,
+          currentSpend: "85.41K",
           previousMonth: "NOV'24",
-          previousSpend: 80290,
-          comparisonAmount: 5120,
+          previousSpend: "80.29K",
+          comparisonAmount: "5.12K",
           isLower: false,
         },
       ],

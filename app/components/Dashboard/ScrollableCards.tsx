@@ -4,49 +4,18 @@ import { View, ViewStyle, FlatList, Animated, Dimensions } from "react-native"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
 import { ExpenseInsights } from "./ExpenseInsights"
+import { useAppSelector } from "@/store/store"
 
-interface CardData {
-  id: string
-  title: string
-  amount: string
-  compareAmount: string
-  compareMonth: string
-  currentMonth: string
-}
+const { width } = Dimensions.get("window")
 
 export const ScrollableCards = () => {
   const { themed } = useAppTheme()
   const scrollX = useRef(new Animated.Value(0)).current
   const [activeIndex, setActiveIndex] = useState(0)
-  const { width } = Dimensions.get("window")
 
-  // Demo card data
-  const cardData: CardData[] = [
-    {
-      id: "1",
-      title: "FEB'25",
-      amount: "59.76K",
-      compareAmount: "40.97K",
-      compareMonth: "Jan'25",
-      currentMonth: "FEB'25",
-    },
-    {
-      id: "2",
-      title: "JAN'25",
-      amount: "100.73K",
-      compareAmount: "15.32K",
-      compareMonth: "Dec'24",
-      currentMonth: "JAN'25",
-    },
-    {
-      id: "3",
-      title: "DEC'24",
-      amount: "85.41K",
-      compareAmount: "5.12K",
-      compareMonth: "Nov'24",
-      currentMonth: "DEC'24",
-    },
-  ]
+  const { data } = useAppSelector((state) => state.dashboard)
+
+  const cardData = data?.monthlyInsights || []
 
   const handleScroll = Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
     useNativeDriver: false,
@@ -73,9 +42,9 @@ export const ScrollableCards = () => {
           <View style={{ width: width - 40 }}>
             <ExpenseInsights
               currentMonth={item.currentMonth}
-              currentSpend={item.amount}
-              compareAmount={item.compareAmount}
-              prevMonth={item.compareMonth}
+              currentSpend={item.currentSpend}
+              compareAmount={item.comparisonAmount}
+              prevMonth={item.previousMonth}
             />
           </View>
         )}

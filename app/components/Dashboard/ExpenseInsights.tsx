@@ -13,10 +13,10 @@ interface ExpenseInsightsProps {
 }
 
 export const ExpenseInsights = ({
-  currentMonth = "FEB'25",
-  currentSpend = "59.76K",
-  compareAmount = "40.97K",
-  prevMonth = "Jan'25",
+  currentMonth,
+  currentSpend,
+  compareAmount,
+  prevMonth,
 }: ExpenseInsightsProps) => {
   const { themed } = useAppTheme()
 
