@@ -1,10 +1,11 @@
-// app/components/Dashboard/ScrollableCards.tsx
+// Updated ScrollableCards.tsx
 import React, { useRef, useState } from "react"
-import { View, ViewStyle, FlatList, Animated, Dimensions } from "react-native"
+import { View, ViewStyle, TextStyle, FlatList, Animated, Dimensions } from "react-native"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
 import { ExpenseInsights } from "./ExpenseInsights"
 import { useAppSelector } from "@/store/store"
+import { Text } from "@/components"
 
 const { width } = Dimensions.get("window")
 
@@ -13,10 +14,16 @@ export const ScrollableCards = () => {
   const scrollX = useRef(new Animated.Value(0)).current
   const [activeIndex, setActiveIndex] = useState(0)
 
+  // Get data and loading state from Redux
   const { data } = useAppSelector((state) => state.dashboard)
-
   const cardData = data?.monthlyInsights || []
 
+  // Show empty state when no insights are available
+  if (!cardData.length) {
+    return <></>
+  }
+
+  // Rest of the component remains the same
   const handleScroll = Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
     useNativeDriver: false,
     listener: (event: any) => {
@@ -89,7 +96,20 @@ export const ScrollableCards = () => {
   )
 }
 
-// Styles
+const $emptyContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  padding: spacing.xl,
+  alignItems: "center",
+  justifyContent: "center",
+  backgroundColor: "white",
+  borderRadius: 20,
+  marginHorizontal: spacing.lg,
+})
+
+const $emptyText: ThemedStyle<TextStyle> = ({ colors }) => ({
+  fontSize: 16,
+  color: colors.textDim,
+  textAlign: "center",
+})
 const $listContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   paddingHorizontal: spacing.lg,
 })
