@@ -8,13 +8,13 @@ A comprehensive mobile application for managing personal finances, incorporating
 
 |                                                                       |                                                                    |                                                                      |
 | --------------------------------------------------------------------- | ------------------------------------------------------------------ | -------------------------------------------------------------------- |
-| <img src="./assets/screenshots/login-screen.png" width="100">         | <img src="./assets/screenshots/balance-overview.png" width="100">  | <img src="./assets/screenshots/budget-overview.png" width="100">     |
+| <img src="./assets/screenshots/login-screen.png" width="150">         | <img src="./assets/screenshots/balance-overview.png" width="150">  | <img src="./assets/screenshots/budget-overview.png" width="150">     |
 | Login Screen                                                          | Balance Summary                                                    | Budget Overview                                                      |
-| <img src="./assets/screenshots/expense-distribution.png" width="100"> | <img src="./assets/screenshots/monthly-expenses.png" width="100">  | <img src="./assets/screenshots/recent-transactions.png" width="100"> |
+| <img src="./assets/screenshots/expense-distribution.png" width="150"> | <img src="./assets/screenshots/monthly-expenses.png" width="150">  | <img src="./assets/screenshots/recent-transactions.png" width="150"> |
 | Category Wise Expenses                                                | Monthly Expenses                                                   | Recent Transactions                                                  |
-| <img src="./assets/screenshots/all-transactions.png" width="100">     | <img src="./assets/screenshots/budget-management.png" width="100"> | <img src="./assets/screenshots/add-budget.png" width="100">          |
+| <img src="./assets/screenshots/all-transactions.png" width="150">     | <img src="./assets/screenshots/budget-management.png" width="150"> | <img src="./assets/screenshots/add-budget.png" width="150">          |
 | All Transactions                                                      | Budget Management                                                  | Add Budget                                                           |
-| <img src="./assets/screenshots/update-budget.png" width="100">        |                                                                    |                                                                      |
+| <img src="./assets/screenshots/update-budget.png" width="150">        |                                                                    |                                                                      |
 | Update/Delete Budget                                                  |                                                                    |                                                                      |
 
 
