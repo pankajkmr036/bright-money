@@ -4,11 +4,41 @@ A comprehensive mobile application for managing personal finances, incorporating
 
 # Demo
 
-<a href="https://drive.google.com/file/d/1hmUkWSuznR84aLiiFfARUlh_7JVEw08R/preview">
-  <img src="https://img.shields.io/badge/Watch%20Demo-Video-red" alt="Watch Demo Video">
-</a>
+## Screenshots
 
-Google Drive link: https://drive.google.com/file/d/1hmUkWSuznR84aLiiFfARUlh_7JVEw08R/view?usp=drive_link
+### Login Screen
+![Login Screen](./assets/screenshots/login-screen.png)
+
+### Balance Summary
+![Dashboard](./assets/screenshots/balance-overview.png)
+
+### Budget Overview
+![Transactions](./assets/screenshots/budget-overview.png)
+
+### Categroy wise expenses
+![Budget](./assets/screenshots/expense-distribution.png)
+
+### Monthly expenses
+![Budget](./assets/screenshots/monthly-expenses.png)
+
+### Recet transactions
+![Budget](./assets/screenshots/recent-transactions.png)
+
+### All transactions
+![Budget](./assets/screenshots/all-transactions.png)
+
+### Budget management
+![Budget](./assets/screenshots/budget-management.png)
+
+### Add budget
+![Budget](./assets/screenshots/add-budget.png)
+
+### Update/delete budget
+![Budget](./assets/screenshots/update-budget.png)
+
+
+## Video
+
 
 ## Overview
 
