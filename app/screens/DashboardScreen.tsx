@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useState } from "react"
 import { View, ViewStyle, TextStyle, Platform, ScrollView } from "react-native"
-import { Screen, Text, Button, Icon } from "@/components"
+import { Screen, Text, Icon } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { useSafeAreaInsetsStyle } from "../utils/useSafeAreaInsetsStyle"
 import { $styles, colors, type ThemedStyle } from "@/theme"
@@ -9,6 +9,7 @@ import { Drawer } from "react-native-drawer-layout"
 import { isRTL } from "@/i18n"
 import { useAppDispatch, useAppSelector } from "@/store/store"
 import { logout } from "@/store/auth/authSlice"
+import { useDashboardData } from "@/hooks/useDashboardData"
 import {
   BalanceHeader,
   BudgetOverview,
@@ -19,6 +20,7 @@ import {
   MonthlyExpenseGraph,
   ScrollableCards,
 } from "@/components/Dashboard"
+import { ActionButton } from "@/components/Buttons"
 
 const isAndroid = Platform.OS === "android"
 
@@ -59,16 +61,7 @@ export const DashboardScreen: FC<MainTabScreenProps<"Dashboard">> = () => {
 
       {/* Logout Button */}
       <View style={themed($logoutContainer)}>
-        <Button
-          preset="reversed"
-          text="Logout"
-          style={themed($logoutButton)}
-          textStyle={themed($logoutButtonText)}
-          LeftAccessory={({ style }) => (
-            <Icon icon="back" color="white" size={20} containerStyle={style} />
-          )}
-          onPress={handleLogout}
-        />
+        <ActionButton text="Logout" variant="primary" onPress={handleLogout} />
       </View>
     </View>
   )
@@ -144,12 +137,4 @@ const $menuContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
 const $logoutContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   paddingVertical: spacing.lg,
   marginBottom: spacing.lg,
-})
-
-const $logoutButton: ThemedStyle<ViewStyle> = ({ colors }) => ({
-  backgroundColor: colors.tint,
-})
-
-const $logoutButtonText: ThemedStyle<TextStyle> = () => ({
-  fontSize: 16,
 })
