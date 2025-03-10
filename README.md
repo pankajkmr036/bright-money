@@ -19,6 +19,12 @@ A comprehensive mobile application for managing personal finances, incorporating
 
 
 
+## Video Demo
+<a href="https://drive.google.com/file/d/1qPfJfeC5CBaqOVfncybaKx6noCKA-89o/preview">
+  <img src="https://img.shields.io/badge/Watch%20Demo-Video-red" alt="Watch Demo Video">
+</a>
+
+
 ## Overview
 
 This React Native application allows users to:
